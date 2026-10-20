@@ -45,7 +45,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
   <section id="page-overview" class="page active">
     <div class="metrics">
       <div class="metric"><div class="label">Kolektory podłączone live</div><div class="number accent">0</div><div class="foot">BETA nie synchronizuje jeszcze źródeł</div></div>
-      <div class="metric"><div class="label">Walidacje schematu w CI</div><div class="number accent">1</div><div class="foot">PASS · run #39454759685; to nie jest conformance</div></div>
+      <div class="metric"><div class="label">Walidacje schematu w CI</div><div class="number accent">1</div><div class="foot">Schema job PASS · run #39456930057; oddzielnie M1 signature gate FAIL</div></div>
       <div class="metric"><div class="label">Otwarte bramki / konflikty</div><div class="number warnnum">3</div><div class="foot">M1 authority · P-008 · M1 signature binding</div></div>
       <div class="metric"><div class="label">Rekordy live w rejestrze</div><div class="number">0</div><div class="foot">Schema jest propozycją, nie bazą danych</div></div>
     </div>
@@ -55,7 +55,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
         <h3>Stan odziedziczony — wymaga potwierdzenia</h3><p class="sub">Nie jest wynikiem automatycznego audytu wykonanego dziś.</p>
         <div class="status-row"><div><b>M1 · Ciągłość uprawnień</b><small>Źródło: wcześniejsze materiały governance; aktualność niepotwierdzona.</small></div><span class="badge blocked">NOT PROVEN</span></div>
         <div class="status-row"><div><b>P-008 · Ratification gate</b><small>Poprzedni zapis wskazuje PROPOSED; w tym panelu nie zatwierdzono zmiany normatywnej.</small></div><span class="badge proposed">PROPOSED / BLOCKED</span></div>
-        <div class="status-row"><div><b>M1 · podpis a treść bieżącego rekordu</b><small>Podpis SSH weryfikuje historyczne bajty; nie weryfikuje aktualnej treści po ostrzeżeniu z 17.10.2026.</small></div><span class="badge blocked">SIGNATURE MISMATCH</span></div>
+        <div class="status-row"><div><b>M1 · podpis a treść bieżącego rekordu</b><small>Podpis SSH weryfikuje historyczne bajty; nie weryfikuje aktualnej treści po ostrzeżeniu z 17.10.2026.</small></div><span class="badge blocked">FAIL · M1 SIGNATURE</span></div>
         <div class="notice-inline">Interpretacja: stan odziedziczony jest punktem startowym inwentaryzacji, a nie certyfikatem aktualnego stanu repozytoriów.</div>
       </div>
       <div class="card">
@@ -94,7 +94,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
   </section>
 
   <section id="page-gates" class="page">
-    <div class="page-title"><div><h2>Bramki governance</h2><p>Stan historyczny przedstawiony tylko jako lista do ponownej weryfikacji.</p></div><span class="pill warn">NO RATIFICATION IMPLIED</span></div>
+    <div class="page-title"><div><h2>Bramki governance</h2><p>Stan historyczny przedstawiony tylko jako lista do ponownej weryfikacji.</p></div><span class="pill warn">NO RATIFICATION IMPLIED</span></div>\n    <div class="notice" role="alert" aria-live="polite" style="border-color:#78434a;background:linear-gradient(90deg,#4b1d2648,#211b143b)"><div class="mark" style="color:var(--red)">⛔</div><div><b style="color:#ffaaaa">CRITICAL ERROR: M1 CONTENT / SIGNATURE MISMATCH (FAIL).</b><p>OpenSSH_9.6p1: historyczny plik M1 PASS (exit 0); aktualne bajty FAIL (exit 255, „incorrect signature”). M1 pozostaje BLOCKED. Bramka celowo kończy CI niepowodzeniem, dopóki bieżąca treść nie zostanie prawidłowo podpisana przez uprawnionego wystawcę i niezależnie zweryfikowana.</p></div></div>
     <div class="grid2">
       <div class="card">
         <h3>Przejścia krytyczne</h3><p class="sub">Bramka nie może przejść dalej bez konkretnego dowodu wejściowego.</p>
@@ -130,11 +130,11 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
         <div class="status-row"><div><b>Aura-IDToken/aura-specification / aura-poc-a-core-v3.3</b><small>Nie archiwizowano: obecne połączenie ma uprawnienia tylko do odczytu. Wymagane właścicielskie upoważnienie i notice w repo.</small></div><span class="badge blocked">ACCESS BLOCKED</span></div>
       </div>
       <div class="card"><h3>Schema Validation First</h3><p class="sub">Twarda bramka przed planowanym kolektorem live.</p>
-        <div class="status-row"><div><b>Evidence Schema Validation</b><small>Ajv CLI 5.0.0 + ajv-formats 3.0.1; uruchomienie GitHub Actions 39454759685.</small></div><span class="badge good">PASS</span></div>
+        <div class="status-row"><div><b>Evidence Schema Validation</b><small>Ajv CLI 5.0.0 + ajv-formats 3.0.1; schema job PASS w run #39456930057. To nie jest conformance.</small></div><span class="badge good">PASS</span></div>
         <div class="status-row"><div><b>Pozytywne i negatywne kontrole</b><small>Valid registry record akceptowany; brak evidence_id i dodatkowe pole odrzucone.</small></div><span class="badge good">PASS</span></div>
         <div class="status-row"><div><b>APS-300 schema status</b><small>Źródłowe APS-300 oraz przypięte schematy są DRAFT; walidacja struktury nie ratyfikuje kontraktu.</small></div><span class="badge proposed">DRAFT / NON-NORMATIVE</span></div>
         <p class="notice-inline">Kolektor live pozostaje zablokowany, dopóki schema gate nie jest zielony dla aktualnego PR i kontrakt dowodowy / authority scope nie jest jawny.</p>
-        <p><a href="https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39454759685" target="_blank" rel="noreferrer">Otwórz udane uruchomienie CI #39454759685 ↗</a></p>
+        <p><a href="https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057" target="_blank" rel="noreferrer">Otwórz uruchomienie CI #39456930057 — schema PASS / M1 FAIL ↗</a></p>
       </div>
     </div>
     <div class="notice"><div class="mark">⚠</div><div><b>SSoT operacyjny ≠ normatywne SSoT</b><p>BETA jest punktem koordynacji dla nowych prac. Nie została uznana za jedyne normatywne źródło protokołu, ponieważ konflikty kanoniczności i governance nadal wymagają dowodów oraz kompetentnego rozstrzygnięcia.</p></div></div>
