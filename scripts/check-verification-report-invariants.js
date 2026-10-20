@@ -3,7 +3,8 @@
 const fs = require("node:fs");
 const paths = [
   "tests/fixtures/verification-report/valid-technical-pass-governance-blocked.json",
-  "tests/fixtures/verification-report/valid-signature-fail.json"
+  "tests/fixtures/verification-report/valid-signature-fail.json",
+  "tests/fixtures/verification-report/valid-input-digest-mismatch-ssh-blocked.json"
 ];
 let failed = false;
 function reject(file, message) { failed = true; console.error(`FAIL ${file}: ${message}`); }
@@ -46,3 +47,4 @@ for (const file of paths) {
 }
 if (failed) process.exit(1);
 console.log("PASS: verification-report cross-reference and status invariants");
+
