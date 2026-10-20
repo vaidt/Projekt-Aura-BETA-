@@ -61,3 +61,17 @@ Not permitted by this baseline:
 ## 5. Decision discipline
 
 Status changes require new, source-bound evidence. A report's existence does not make its claims current. An exhaustive search does not resolve an authority gap. Each future status update must identify the previous status, new evidence, verification method, reviewer, effective scope, and reason for the transition.
+
+
+## 6. Fresh partial source review — 2026-10-20
+
+A bounded source review was performed after the initial baseline was drafted. It covered current HEADs and selected workflow runs for candidate specification, implementation, and conformance repositories, plus a detached-signature-to-exact-bytes check for the M1 closure record.
+
+The results are recorded separately in [SOURCE_BASELINE_2026-10-20.md](../assurance/SOURCE_BASELINE_2026-10-20.md). Material findings:
+
+- two specification repositories retain the same canonical-source claim in their README while pointing to different `main` commits;
+- the inspected `Draft Conformance` runs differ (success on the `vaidt` source HEAD; failure on the `Aura-IDToken` source HEAD);
+- the attached M1 SSH signature verifies the historical exact Markdown bytes but fails against the current amended bytes;
+- the current DQ-006 closure package states `OPEN`; the broader governance conflict is not resolved by the signature check.
+
+This was a bounded inspection, not exhaustive Git history reconstruction and not a final authority adjudication. Current status disposition remains **CONFLICTED / NOT PROVEN pending independent review and the competent governance process**.
