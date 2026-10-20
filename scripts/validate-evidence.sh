@@ -79,6 +79,9 @@ run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-error
   -d tests/fixtures/verification-report/valid-signature-fail.json --valid
 run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
   -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/valid-input-digest-mismatch-ssh-blocked.json --valid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
   -d tests/fixtures/verification-report/invalid/missing-overall-reason-code.json --invalid
 run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
   -s "$REPORT_SCHEMA" \
