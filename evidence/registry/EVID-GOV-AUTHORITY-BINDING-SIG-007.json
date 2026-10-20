@@ -1,0 +1,46 @@
+{
+  "evidence_id": "EVID-GOV-AUTHORITY-BINDING-SIG-007",
+  "claim_id": "OpenSSH verifies current Authority Binding v1.1 exact bytes under the pinned repository-sourced allowed_signers key",
+  "source_uri": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/AUTHORITY_BINDING_RECORD_v1.1.md",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "991274eed57d5b3308b0607feeb4d01e6a485974",
+    "repository": "vaidt/aura-specification",
+    "path": "AUTHORITY_BINDING_RECORD_v1.1.md"
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "OpenSSH ssh-keygen -Y verify",
+    "version": "OpenSSH_9.6p1 Ubuntu-3ubuntu13.20; OpenSSL 3.0.13",
+    "command_or_procedure": "Source-pinned GitHub Actions run #39472439876 verified AUTHORITY_BINDING_RECORD_v1.1.md.sig over exact current record bytes with identity kontakt.vaidt@gmail.com and namespace aura-governance; exit 0. Current record and signature Git blob pins matched.",
+    "environment": "GitHub Actions run #39472439876; PR branch head 89fab12a9310dd72b243db2b3130d9d189d4b; checked-out merge ref 72883b1f607612be19fbcea4490f89125215c7e3; allowed_signers pinned at vaidt/aura-specification@091ab7a88ee626caa536c641fa3cee53a6e008df."
+  },
+  "scope_coverage": {
+    "included": [
+      "Current Authority Binding v1.1 exact bytes at source commit 991274eed57d5b3308b0607feeb4d01e6a485974",
+      "Attached signature blob eed7842fc54f5bfeaaafecca63f5dfbe24823b79",
+      "allowed_signers blob fa4fa29ed870f350f38157e9a1e15fe9654a6f86"
+    ],
+    "excluded": [
+      "Independent civil identity evidence",
+      "Independent proof of exclusive private-key possession",
+      "Competence to ratify or establish the binding record",
+      "External trust anchor or independent authority source",
+      "Effective date and current constitutional validity"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:10:41Z",
+  "reviewer": "AURA BETA CI source-pinned OpenSSH observation",
+  "limitations": [
+    "PASS establishes exact-byte signature validity under the tested repository-sourced key input only.",
+    "The record's own identity and authority statements are signed assertions, not independent evidence of the asserted facts.",
+    "This record does not establish that the signer was competent to declare the binding record RATIFIED."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876",
+  "notes": "Signature result PASS / exit 0; OpenSSH reported ED25519 fingerprint SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU. The authority chain remains NOT PROVEN."
+}
