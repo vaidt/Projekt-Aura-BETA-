@@ -89,6 +89,9 @@ run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-error
 run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
   -s "$REPORT_SCHEMA" \
   -d tests/fixtures/verification-report/invalid/overall-pass-without-aps300-records.json --invalid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/invalid/aps300-present-on-draft-source.json --invalid
 node scripts/check-verification-report-invariants.js
 
 echo
