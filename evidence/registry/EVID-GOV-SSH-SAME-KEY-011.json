@@ -1,0 +1,45 @@
+{
+  "evidence_id": "EVID-GOV-SSH-SAME-KEY-011",
+  "claim_id": "Genesis Declaration, Authority Binding v1.1 and current P-008 were verified as three separate artifacts under the same Ed25519 key fingerprint",
+  "source_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "89fab12a9310dd72b243db0aec2b313d9d189d4b",
+    "repository": "vaidt/Projekt-Aura-BETA-",
+    "path": "scripts/verify-primary-authority-chain.sh"
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "OpenSSH ssh-keygen -Y verify log inspection",
+    "version": "OpenSSH_9.6p1 Ubuntu-3ubuntu13.20; OpenSSL 3.0.13",
+    "command_or_procedure": "Inspected source-pinned observation logs in run #39472439876. The three checks each reported PASS / exit 0; each OpenSSH success line reports ED25519 fingerprint SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU.",
+    "environment": "GitHub Actions run #39472439876; allowed_signers pinned from vaidt/aura-specification@091ab7a88ee626caa536c641fa3cee53a6e008df."
+  },
+  "scope_coverage": {
+    "included": [
+      "Genesis Declaration / aura-genesis exact-byte check",
+      "Authority Binding v1.1 / aura-governance exact-byte check",
+      "P-008 record / aura-governance exact-byte check",
+      "Fingerprint reported by OpenSSH"
+    ],
+    "excluded": [
+      "Independent machines or independent verifier implementations",
+      "Independent trust roots or distinct signer identities",
+      "Issuer competence, civil identity, prior authority, or ratification effectiveness"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:10:41Z",
+  "reviewer": "AURA BETA CI source-pinned OpenSSH observation",
+  "limitations": [
+    "Three successful artifact verifications are not three independent trust anchors; they share one public-key fingerprint and repository-sourced allow-list.",
+    "OpenSSH PASS establishes exact-byte signature validity under the tested key input only.",
+    "The current M1 strict gate remains FAIL / exit 255."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876",
+  "notes": "Prefer 'three separate signature artifacts verified' over 'three independent signatures' unless independent signers, roots and verification boundaries are established."
+}

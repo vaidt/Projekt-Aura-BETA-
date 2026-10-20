@@ -1,0 +1,79 @@
+name: Evidence and Governance Verification
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - alpha/bootstrap-architecture
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evidence-governance-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-evidence:
+    name: Validate evidence schemas and records
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install validator tools from committed lockfile
+        run: npm ci --prefix tools/schema-validator --ignore-scripts
+
+      - name: Validate schemas, fixtures, provenance pins, and every evidence JSON file
+        env:
+          AJV_BIN: ${{ github.workspace }}/tools/schema-validator/node_modules/.bin/ajv
+        run: bash scripts/validate-evidence.sh
+
+  verify-m1-signature:
+    name: M1 exact-byte signature gate (strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm OpenSSH availability
+        run: |
+          command -v ssh-keygen
+          ssh -V 2>&1
+
+      - name: Verify historical control and require current M1 signature PASS
+        run: bash scripts/verify-m1-signature.sh
+
+  observe-primary-authority:
+    name: Observe pinned authority-source signatures (non-constitutive)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Confirm OpenSSH availability
+        run: |
+          command -v ssh-keygen
+          ssh -V 2>&1
+
+      - name: Pin source inputs and observe exact-byte signatures
+        run: bash scripts/verify-primary-authority-chain.sh
+
+      - name: Upload observation record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-primary-authority-observation
+          path: ${{ runner.temp }}/aura-primary-authority-observation/authority-source-signature-observation.json
+          if-no-files-found: warn
+          retention-days: 30

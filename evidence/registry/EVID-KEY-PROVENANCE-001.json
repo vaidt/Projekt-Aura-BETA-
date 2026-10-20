@@ -1,0 +1,56 @@
+{
+  "evidence_id": "EVID-KEY-PROVENANCE-001",
+  "claim_id": "Byte-level SHA-256 and Git blob inventory for eight pinned AURA authority-related source artifacts",
+  "source_uri": "https://github.com/vaidt/aura-specification",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "GENESIS=89de18afc41e79afc0259116df861928dfae8cba; RELATED=991274eed57d5b3308b0607feeb4d01e6a485974",
+    "repository": "vaidt/aura-specification",
+    "path": null
+  },
+  "content_digest": {
+    "algorithm": "SHA-256",
+    "value": "1a41e6a6f44a25f4050ce3a1e5ff1f0f5a96d8d2399beb987a10ba24e999744d",
+    "scope": "Generated docs/governance/KEY_PROVENANCE_MANIFEST.json bytes"
+  },
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "Pinned Git object and raw-byte digest inventory",
+    "version": "1.0",
+    "command_or_procedure": "git show COMMIT:PATH; git rev-parse COMMIT:PATH; Python hashlib.sha256; verify pinned Genesis values",
+    "environment": "Local Termux; Python 3"
+  },
+  "scope_coverage": {
+    "included": [
+      "GENESIS_DECLARATION",
+      "GENESIS_SIGNATURE",
+      "AUTHORITY_BINDING_RECORD",
+      "AUTHORITY_BINDING_SIGNATURE",
+      "P008_RATIFICATION_RECORD",
+      "P008_SIGNATURE",
+      "M1_CLOSURE_RECORD",
+      "M1_CLOSURE_SIGNATURE"
+    ],
+    "excluded": [
+      "SSH signature verification",
+      "Signer identity and competence",
+      "Authority continuity and constitutional validity",
+      "Normative ratification or implementation authorization"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T19:16:38Z",
+  "reviewer": "NOT_INDEPENDENTLY_REVIEWED",
+  "limitations": [
+    "This is a byte and Git-object inventory, not a trust-anchor determination.",
+    "Signature files are hashed but their SSH signatures are not verified by this script.",
+    "Signer identity, authority continuity, constitutional validity and ratification are not established.",
+    "The inventory is limited to the eight explicitly pinned artifacts and commits.",
+    "PASS applies only to the declared byte-hashing and Git-object checks.",
+    "The manifest and record are non-constitutive engineering evidence."
+  ],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": null,
+  "notes": "Manifest path: docs/governance/KEY_PROVENANCE_MANIFEST.json. No SSH signature validation or governance-authority determination was performed."
+}
