@@ -59,8 +59,8 @@ The initial local SSHSIG/Ed25519 check was independently reproduced with the sta
 
 | Target bytes | Result | Meaning |
 |---|---|---|
-| Historical M1 Markdown at the signed revision | **PASS** | The detached signature validates the exact historical bytes against the public key in the repository's `allowed_signers`. |
-| Current M1 Markdown including the Oct 17 warning | **FAIL** | The same detached signature does not validate the current amended bytes. |
+| Historical M1 Markdown at the signed revision | **PASS — exit 0** | OpenSSH reported a good `aura-governance` signature for identity `kontakt.vaidt@gmail.com`, ED25519 fingerprint `SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU`. |
+| Current M1 Markdown including the Oct 17 warning | **FAIL — exit 255** | OpenSSH reported `Signature verification failed: incorrect signature`. |
 
 ### Interpretation boundary
 
@@ -104,7 +104,7 @@ This document records a bounded technical observation and proposed work. It has 
 
 ## 8. Independent reproduction with OpenSSH
 
-The standard OpenSSH reproduction is complete; the following commands are retained as a repeatable independent procedure. The recorded Action run is evidence for the exact inputs and environment stated below, but is not a governance ratification or an external determination of signer authority.
+The standard OpenSSH reproduction is complete; the following commands are retained as a repeatable independent procedure. The recorded Action run is evidence for the exact inputs and environment stated below, but is not a governance ratification or an external determination of signer authority. The run checked out merge commit `4f98747b9e4bc7097e5fd8249f15a351edd06ac9`; it does not establish CI status for later commits added to the open Draft PR.
 
 ```bash
 git clone https://github.com/vaidt/aura-specification.git /tmp/aura-specification
