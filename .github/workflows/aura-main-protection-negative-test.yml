@@ -9,6 +9,26 @@ permissions:
   contents: read
 
 jobs:
+  synthetic-schema-pass:
+    name: Validate evidence schemas and records
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Emit synthetic PASS for policy isolation only
+        run: |
+          echo "SYNTHETIC NEGATIVE TEST ONLY; not schema validation or AURA evidence."
+          exit 0
+
+  synthetic-authority-observation-pass:
+    name: Observe pinned authority-source signatures (non-constitutive)
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Emit synthetic PASS for policy isolation only
+        run: |
+          echo "SYNTHETIC NEGATIVE TEST ONLY; not signature verification or AURA evidence."
+          exit 0
+
   negative-m1-check:
     name: M1 exact-byte signature gate (strict)
     runs-on: ubuntu-latest
