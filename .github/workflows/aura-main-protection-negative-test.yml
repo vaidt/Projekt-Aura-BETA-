@@ -1,0 +1,20 @@
+name: AURA Main Protection Negative Test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  negative-m1-check:
+    name: M1 exact-byte signature gate (strict)
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Deliberately fail the required-check control test
+        run: |
+          echo "::error::SYNTHETIC NEGATIVE TEST ONLY. This is not the AURA M1 verifier and is not protocol evidence."
+          exit 1
