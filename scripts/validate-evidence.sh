@@ -11,7 +11,7 @@ run_ajv() {
 
 echo "== AURA BETA evidence validation =="
 echo "Validator: $(command -v "$AJV_BIN")"
-"$AJV_BIN" --version
+echo "Validator package versions are pinned in .github/workflows/evidence-schema-validation.yml (ajv-cli@5.0.0, ajv-formats@3.0.1)."
 
 echo
 echo "== 1. Verify pinned upstream schema snapshots =="
