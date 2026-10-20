@@ -23,6 +23,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
       <button class="active" data-page="overview"><span class="glyph">◈</span> Przegląd</button>
       <button data-page="evidence"><span class="glyph">⌁</span> Rejestr dowodów</button>
       <button data-page="gates"><span class="glyph">⊙</span> Bramki governance</button>
+      <button data-page="consolidation"><span class="glyph">⌂</span> Konsolidacja repozytoriów</button>
       <button data-page="roadmap"><span class="glyph">↗</span> Plan i następne kroki</button>
     </nav>
   </div>
@@ -44,7 +45,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
   <section id="page-overview" class="page active">
     <div class="metrics">
       <div class="metric"><div class="label">Kolektory podłączone live</div><div class="number accent">0</div><div class="foot">BETA nie synchronizuje jeszcze źródeł</div></div>
-      <div class="metric"><div class="label">Uruchomione kontrole</div><div class="number">0</div><div class="foot">Brak wyników verifiera w tym repo</div></div>
+      <div class="metric"><div class="label">Walidacje schematu w CI</div><div class="number accent">1</div><div class="foot">PASS · run #39453506193; to nie jest conformance</div></div>
       <div class="metric"><div class="label">Otwarte bramki / konflikty</div><div class="number warnnum">3</div><div class="foot">M1 authority · P-008 · M1 signature binding</div></div>
       <div class="metric"><div class="label">Rekordy live w rejestrze</div><div class="number">0</div><div class="foot">Schema jest propozycją, nie bazą danych</div></div>
     </div>
@@ -109,6 +110,36 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
     <div class="notice"><div class="mark">!</div><div><b>Nie skracamy łańcucha</b><p>Nie traktujemy deklaracji roli w dokumencie, nazwy konta GitHub lub dostępu do zapisu jako wystarczającego dowodu władzy konstytucyjnej. Ten demonstrator sam nie rozstrzyga takiej kompetencji.</p></div></div>
   </section>
 
+  <section id="page-consolidation" class="page">
+    <div class="page-title"><div><h2>Konsolidacja repozytoriów</h2><p>Stan operacyjny odczytany z GitHub 20.10.2026; nie jest to deklaracja kanoniczności normatywnej.</p></div><span class="pill demo">PARTIAL · 3 ARCHIVED</span></div>
+    <div class="metrics">
+      <div class="metric"><div class="label">Starsze kopie zarchiwizowane</div><div class="number accent">3</div><div class="foot">Notice commit przed archiwizacją</div></div>
+      <div class="metric"><div class="label">Namespace’y do dalszego uzgodnienia</div><div class="number warnnum">2</div><div class="foot">Aura-IDToken i aktywne vaid t źródła</div></div>
+      <div class="metric"><div class="label">BETA jako punkt operacyjny</div><div class="number">TARGET</div><div class="foot">Normative SSoT: NOT ESTABLISHED</div></div>
+      <div class="metric"><div class="label">Walidacja evidence</div><div class="number accent">PASS</div><div class="foot">Schema gate; collector jeszcze nie działa</div></div>
+    </div>
+    <div class="table-card"><div class="table-head"><h3>Archiwizacja potwierdzona po wykonaniu</h3><span class="pill">HISTORY PRESERVED</span></div><div class="table-wrap"><table><thead><tr><th>Repozytorium</th><th>Notice commit</th><th>Stan</th><th>Granica</th></tr></thead><tbody>
+      <tr><td><b>kamilkrasinski4-sys/aura-specification</b><small>Baseline: 528de0de6d34a4a7ff541db9cd93238587dac9ef</small></td><td><a href="https://github.com/kamilkrasinski4-sys/aura-specification/commit/a39f58a603b6a682ae70be1f0141a7a7bf48415e" target="_blank" rel="noreferrer">a39f58a</a></td><td><span class="badge good">ARCHIVED</span></td><td>Historia zachowana; nie wyznacza kanonu protokołu.</td></tr>
+      <tr><td><b>kamilkrasinski4-sys/aura-guard-v1.3</b><small>Baseline: 35082d7b4880dad780fb55a1a5f3ac0ef4322674</small></td><td><a href="https://github.com/kamilkrasinski4-sys/aura-guard-v1.3/commit/27fcd82988a81e60e4f1866f394cb7ca371aa131" target="_blank" rel="noreferrer">27fcd82</a></td><td><span class="badge good">ARCHIVED</span></td><td>History zachowana; kod nie został skasowany.</td></tr>
+      <tr><td><b>kamilkrasinski4-sys/aura-poc-a-core-v3.3</b><small>Baseline: 43f054f8deb7c9644c52148d6496b493512d32b0</small></td><td><a href="https://github.com/kamilkrasinski4-sys/aura-poc-a-core-v3.3/commit/96ad5e5f310f1c71a30d9ce7decc4f04bdfbafed" target="_blank" rel="noreferrer">96ad5e5</a></td><td><span class="badge good">ARCHIVED</span></td><td>History zachowana; zastępstwo funkcjonalne wymaga osobnego dowodu.</td></tr>
+    </tbody></table></div></div>
+    <div class="grid2">
+      <div class="card"><h3>Pozostawione aktywne — celowo</h3><p class="sub">Nie archiwizujemy przez sam fakt podobnej nazwy.</p>
+        <div class="status-row"><div><b>kamilkrasinski4-sys/aura-p0-0-toolchain</b><small>Ostatni zaobserwowany commit main: 15.10.2026; wymaga mapowania zależności i powiązań CI.</small></div><span class="badge proposed">KEEP ACTIVE</span></div>
+        <div class="status-row"><div><b>vaidt/aura-specification / Aura-vNEXT / Aura-Guard / Aura-Conformance-Kit</b><small>Repozytoria zawierają bieżące źródła, implementacje lub dowody; wymagają osobnych decyzji migracyjnych.</small></div><span class="badge neutral">REVIEW</span></div>
+        <div class="status-row"><div><b>Aura-IDToken/aura-specification / aura-poc-a-core-v3.3</b><small>Nie archiwizowano: obecne połączenie ma uprawnienia tylko do odczytu. Wymagane właścicielskie upoważnienie i notice w repo.</small></div><span class="badge blocked">ACCESS BLOCKED</span></div>
+      </div>
+      <div class="card"><h3>Schema Validation First</h3><p class="sub">Twarda bramka przed planowanym kolektorem live.</p>
+        <div class="status-row"><div><b>Evidence Schema Validation</b><small>Ajv CLI 5.0.0 + ajv-formats 3.0.1; uruchomienie GitHub Actions 39453506193.</small></div><span class="badge good">PASS</span></div>
+        <div class="status-row"><div><b>Pozytywne i negatywne kontrole</b><small>Valid registry record akceptowany; brak evidence_id i dodatkowe pole odrzucone.</small></div><span class="badge good">PASS</span></div>
+        <div class="status-row"><div><b>APS-300 schema status</b><small>Źródłowe APS-300 oraz przypięte schematy są DRAFT; walidacja struktury nie ratyfikuje kontraktu.</small></div><span class="badge proposed">DRAFT / NON-NORMATIVE</span></div>
+        <p class="notice-inline">Kolektor live pozostaje zablokowany, dopóki schema gate nie jest zielony dla aktualnego PR i kontrakt dowodowy / authority scope nie jest jawny.</p>
+        <p><a href="https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39453506193" target="_blank" rel="noreferrer">Otwórz udane uruchomienie CI #39453506193 ↗</a></p>
+      </div>
+    </div>
+    <div class="notice"><div class="mark">⚠</div><div><b>SSoT operacyjny ≠ normatywne SSoT</b><p>BETA jest punktem koordynacji dla nowych prac. Nie została uznana za jedyne normatywne źródło protokołu, ponieważ konflikty kanoniczności i governance nadal wymagają dowodów oraz kompetentnego rozstrzygnięcia.</p></div></div>
+  </section>
+
   <section id="page-roadmap" class="page">
     <div class="page-title"><div><h2>Plan i następne kroki</h2><p>Najpierw kontrola i kontrakt; dopiero potem implementacja.</p></div><span class="pill demo">WP-0 ACTIVE IN PLAN ONLY</span></div>
     <div class="timeline">
@@ -150,7 +181,7 @@ function drawEvidence(){
  const el=document.getElementById("evidenceRows"); if(!el)return;
  el.innerHTML=rows.length?rows.map(e=>'<tr><td><b class="mono">'+e.id+'</b><small>'+e.claim+'</small></td><td><b>'+e.source+'</b><small>'+e.revision+'</small></td><td>'+badge(e.availability)+'</td><td>'+badge(e.result)+'</td><td>'+e.limit+'</td></tr>').join(""):'<tr><td colspan="5" class="empty">Brak pozycji pasujących do filtra.</td></tr>';
 }
-const names={overview:"OVERVIEW",evidence:"EVIDENCE LEDGER",gates:"GOVERNANCE GATES",roadmap:"ROADMAP"};
+const names={overview:"OVERVIEW",evidence:"EVIDENCE LEDGER",gates:"GOVERNANCE GATES",consolidation:"REPOSITORY CONSOLIDATION",roadmap:"ROADMAP"};
 function navigate(name){
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  const pg=document.getElementById("page-"+name); if(pg)pg.classList.add("active");
