@@ -1,0 +1,51 @@
+{
+  "evidence_id": "EVID-GOV-GENESIS-SIG-006",
+  "claim_id": "OpenSSH verifies exact Genesis Declaration bytes under the pinned repository-sourced allowed_signers key",
+  "source_uri": "https://github.com/vaidt/aura-specification/blob/89de18afc41e79afc0259116df861928dfae8cba/GENESIS_DECLARATION.txt",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "89de18afc41e79afc0259116df861928dfae8cba",
+    "repository": "vaidt/aura-specification",
+    "path": "GENESIS_DECLARATION.txt"
+  },
+  "content_digest": {
+    "algorithm": "SHA-256",
+    "value": "6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6",
+    "scope": "Exact GENESIS_DECLARATION.txt bytes at commit 89de18afc41e79afc0259116df861928dfae8cba"
+  },
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "OpenSSH ssh-keygen -Y verify",
+    "version": "OpenSSH_9.6p1 Ubuntu-3ubuntu13.20; OpenSSL 3.0.13",
+    "command_or_procedure": "Source-pinned GitHub Actions run #39472439876 verified with identity kontakt.vaidt@gmail.com, namespace aura-genesis, pinned Genesis signature and exact declaration bytes; exit 0. All Git blob SHA-1 pins and the declared Genesis SHA-256 matched.",
+    "environment": "GitHub Actions run #39472439876; PR branch head 89fab12a9310dd72b243db2b3130d9d189d4b; checked-out merge ref 72883b1f607612be19fbcea4490f89125215c7e3; allowed_signers pinned at vaidt/aura-specification@091ab7a88ee626caa536c641fa3cee53a6e008df."
+  },
+  "scope_coverage": {
+    "included": [
+      "Exact Genesis declaration bytes at commit 89de18afc41e79afc0259116df861928dfae8cba",
+      "Detached SSHSIG file at the same commit",
+      "allowed_signers blob fa4fa29ed870f350f38157e9a1e15fe9654a6f86",
+      "Genesis SHA-256 equals 6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6"
+    ],
+    "excluded": [
+      "Civil or natural-person identity of key holder",
+      "Prior constitutional competence of issuer",
+      "Uncontested designation of a canonical repository",
+      "Article XI amendment procedure or Article XIII normative effect",
+      "Effective date, revocation status, or legal/constitutional validity"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:10:41Z",
+  "reviewer": "AURA BETA CI source-pinned OpenSSH observation",
+  "limitations": [
+    "PASS applies to exact bytes under the specified repository-sourced allowed_signers input only.",
+    "allowed_signers comes from the same source repository history and is not an independent external trust anchor.",
+    "Signature validity alone does not establish authority continuity, appointment validity, or normative effect."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876",
+  "notes": "Signature result PASS / exit 0; OpenSSH reported ED25519 fingerprint SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU. This is a technical signature observation, not a governance ratification."
+}
