@@ -90,8 +90,8 @@ doc={
     "observations":rows,
     "interpretation_limit":"Each result reports exact-byte SSHSIG verification against the pinned repository-sourced allowed_signers input. Signature PASS does not independently establish natural-person identity, competent authority, canonical repository designation, effective date, ratification procedure, or normative effect."
 }
-Path=os.environ["REPORT"]
-Path(Path).write_text(json.dumps(doc,indent=2)+"\n",encoding="utf-8")
+output_path=Path(os.environ["REPORT"])
+output_path.write_text(json.dumps(doc,indent=2)+"\n",encoding="utf-8")
 PY
 
 echo
