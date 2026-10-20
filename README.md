@@ -2,18 +2,34 @@
 
 > **Repository bootstrap:** 2026-10-20  
 > **Workspace:** `vaidt/Projekt-Aura-BETA-`  
-> **Status:** NON-NORMATIVE · ENGINEERING / CONTROL-PLANE WORKSPACE · NO PRODUCT RELEASE CLAIM
+> **Status:** BOOTSTRAP · NON-NORMATIVE · ENGINEERING / CONTROL-PLANE WORKSPACE · NO PRODUCT RELEASE CLAIM
 
-AURA BETA organizes protocol-to-implementation traceability, revision-bound evidence, verification results, and an audit/control-plane view. It is an engineering workspace, not the normative source of the protocol and not an authority to ratify contract semantics.
+## Purpose
+
+AURA BETA is a controlled integration workspace for designing the AURA protocol engineering system: specification-to-implementation traceability, conformance verification, evidence provenance, and an audit/control-plane interface.
+
+This repository is a **working engineering environment**, not a replacement for the existing AURA specification repositories and not, by itself, an authority to ratify protocol semantics.
+
+## Initial operating principle
+
+**Evidence before status; contract before implementation; independent verification before conformance claims.**
+
+The repository follows these distinctions:
+
+- EXISTS ≠ REACHABLE ≠ CURRENT ≠ AUTHORITATIVE ≠ NORMATIVE ≠ EFFECTIVE.
+- EXHAUSTED ≠ RESOLVED.
+- Implementation behavior does not define protocol semantics.
+- A test suite does not become a conformance authority merely by passing.
+- A dashboard label is not evidence unless it resolves to inspectable, revision-bound evidence.
+- A design proposal has no normative effect unless the required authority and ratification path are independently established.
+
+## Evidence reporting boundary
 
 The control plane may report the result of a defined verifier for identified inputs and revisions. It must not infer authority, ratification, or normative effect from repository state, a signature, a workflow identity, a passing CI run, or a dashboard label.
 
 For every reported gate result, record the repository, immutable commit, input/evidence digests where relevant, verifier version, trust configuration, execution result, and limitations. Keep local test results separate from public workflow results and keep unmerged PR results separate from `main`.
 
-Use these distinctions consistently:
-- **EXISTS ≠ REACHABLE ≠ CURRENT ≠ AUTHORITATIVE ≠ NORMATIVE ≠ EFFECTIVE.**
-- **EXHAUSTED ≠ RESOLVED.**
-- Schema validity, cryptographic validity, semantic conformance, and governance authority are separate findings.
+Schema validity, cryptographic validity, semantic conformance, and governance authority are separate findings.
 
 > **Scope boundary:** AURA BETA reports evidence and gate outcomes within declared rules; it does not itself close G1 or ratify the protocol.
 
