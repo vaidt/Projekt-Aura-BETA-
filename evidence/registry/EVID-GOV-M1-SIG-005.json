@@ -12,15 +12,16 @@
   "evidence_availability": "PRESENT",
   "verification_result": "FAIL",
   "verification_method": {
-    "name": "Local SSHSIG envelope + Ed25519 verification",
-    "version": "local-analysis-run-2026-10-20",
-    "command_or_procedure": "Verify exact current Markdown bytes against unchanged AURA_M1_CLOSURE_RECORD_v1.0.md.sig in namespace aura-governance with the public key entry from allowed_signers.",
-    "environment": "Local analysis runtime; independent OpenSSH ssh-keygen -Y verify reproduction remains pending."
+    "name": "OpenSSH ssh-keygen -Y verify against exact Git-pinned M1 bytes",
+    "version": "OpenSSH_9.6p1 Ubuntu-3ubuntu13.19; OpenSSL 3.0.13",
+    "command_or_procedure": "GitHub Actions run 39456930057: verify historical exact bytes with namespace aura-governance and identity kontakt.vaidt@gmail.com (exit 0); verify current amended exact bytes using the same signature and allowed_signers (exit 255, incorrect signature).",
+    "environment": "GitHub-hosted Ubuntu runner; BETA merge ref 4f98747b9e4bc7097e5fd8249f15a351edd06ac9; source main pinned at 991274eed57d5b3308b0607feeb4d01e6a485974."
   },
   "scope_coverage": {
     "included": [
       "Current M1 Markdown at commit 991274eed57d5b3308b0607feeb4d01e6a485974",
-      "Attached signature file history unchanged since 2026-09-24"
+      "Attached signature file history unchanged since 2026-09-24",
+      "Independent OpenSSH reproduction: historical PASS exit 0; current bytes FAIL exit 255; all six input blob SHAs verified against manifest."
     ],
     "excluded": [
       "Whether historical act is revoked",
@@ -29,15 +30,15 @@
     ],
     "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
   },
-  "observed_at": "2026-10-20T15:56:41.697Z",
-  "reviewer": "AURA BETA source-baseline analysis (2026-10-20)",
+  "observed_at": "2026-10-20T17:34:02Z",
+  "reviewer": "AURA BETA CI independent OpenSSH reproduction (workflow run 39456930057)",
   "limitations": [
     "FAIL means signature verification failed against the current exact bytes.",
-    "Independent OpenSSH reproduction remains pending.",
-    "The mismatch does not itself revoke the historical act or settle who has authority to resolve it."
+    "The mismatch does not itself revoke the historical act or settle who has authority to resolve it.",
+    "The allow-list and signature are repository-bound inputs, not an independent constitutional trust anchor."
   ],
   "supersedes": [],
   "normative_effect": "NONE",
-  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/blob/alpha/bootstrap-architecture/docs/assurance/SOURCE_BASELINE_2026-10-20.md",
-  "notes": "Treat the current Markdown as PRESENT + signature mismatch; do not represent current bytes as signed/verified by the attached signature."
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057",
+  "notes": "Independent OpenSSH verification reproduced the mismatch. Historical exact bytes are signed; current amended bytes are not covered by the attached signature. M1 remains BLOCKED; no conclusion is made about legal/constitutional revocation or signer competence."
 }
