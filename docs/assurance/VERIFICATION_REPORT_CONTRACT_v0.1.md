@@ -43,7 +43,15 @@ Governance uses explicit `PASS`, `FAIL`, or `BLOCKED` plus a reason code and rul
 
 These are BETA workspace reporting semantics. They do not replace APS-300, define normative protocol serialization, or change G0/M1/P-008/WP-3.
 
-## 6. Execution contract
+## 6. APS-300 evidence binding
+
+The verification report is a BETA assurance envelope; it is not itself an APS-300 Evidence Object or Evidence Pack. It must bind the corresponding protocol-level records (or explicitly state why they are absent) using `aps300_binding`.
+
+The binding captures the exact source repository and commit, source-document blob SHA-1, BETA snapshot-manifest blob SHA-1, pinned Evidence Object and Evidence Pack schema blob SHAs, source schema maturity, and the known schema-ID namespace conflict. It also records each Evidence Object / Evidence Pack artifact ID, SHA-256, Git blob SHA-1, and independent schema-validation status.
+
+A `PRESENT` binding requires both records to exist and pass structural validation against the pinned snapshots. A missing or blocked record has an explicit reason and cannot be presented as conformance. Current fixture state is deliberately `BLOCKED`: APS-300 is marked DRAFT in the pinned source, the schema IDs retain a conflicting namespace, and this change does not create a protocol Evidence Object or Pack. Passing draft-schema validation would still not establish protocol conformance or governance ratification.
+
+## 7. Execution contract
 
 The execution record stores `argv` as an array, not a shell command string. It records process state, exit code, environment, network policy/access observation, timestamps, and artifact IDs for stdin/stdout/stderr. Timestamps and runner environment are observational metadata; deterministic comparisons should operate on declared inputs and byte artifacts, not volatile report timestamps.
 
@@ -66,3 +74,6 @@ Runtime objective remains local-first and zero-cloud. CI may use Ajv to validate
 5. Governance PASS with continuity NOT_PROVEN and no ratification evidence is rejected.
 6. The invariant checker rejects unresolved artifact references, duplicate artifact IDs, incorrect digest comparisons labelled MATCH, and impossible aggregate PASS combinations.
 7. All artifacts remain explicitly non-normative.
+
+
+An aggregate `PASS` also requires a `PRESENT` APS-300 binding with both protocol-level records structurally validated against the pinned schema snapshots. The report remains an envelope around those records rather than a substitute for them.
