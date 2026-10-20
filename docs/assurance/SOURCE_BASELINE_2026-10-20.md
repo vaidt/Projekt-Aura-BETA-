@@ -9,7 +9,7 @@
 
 The candidate repository set is not a single interchangeable codebase. It includes competing canonical-source declarations, different branches/commit histories, distinct product and conformance roles, and CI results with different scopes. The inspected evidence is sufficient to require a source/authority conflict register; it is not sufficient to choose a normative winner or make a protocol-conformance claim.
 
-A cryptographic check also found that the detached SSH signature attached to the current M1 closure Markdown verifies the historical content, but does **not** verify the current amended content. This establishes a signature-to-bytes mismatch for the current file; it does not by itself revoke the historical act, decide legal/constitutional validity, or establish which authority may resolve the issue.
+Independent OpenSSH verification in [GitHub Actions run #39456930057](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057) reproduced the signature-to-bytes mismatch: historical M1 exact bytes PASS (exit 0), current amended bytes FAIL (exit 255, `incorrect signature`), using OpenSSH_9.6p1 / OpenSSL 3.0.13. The run verified the six manifest-bound input blob SHAs and confirmed that historical/current signature and `allowed_signers` bytes are identical while the Markdown bytes differ. This establishes the mismatch for the current file; it does not itself revoke the historical act, decide legal/constitutional validity, or establish which authority may resolve the issue.
 
 ## 2. Repository heads observed
 
@@ -55,7 +55,7 @@ The BETA workflow run [#39456930057](https://github.com/vaidt/Projekt-Aura-BETA-
 
 ### Verification procedure and results
 
-A local verifier parsed the OpenSSH SSHSIG envelope (version 1, namespace `aura-governance`, hash algorithm `sha512`, Ed25519 key/signature), bound its public key to the public key entry in the repository's `allowed_signers`, and verified the OpenSSH-defined signed message over SHA-512 of the exact file bytes.
+The initial local SSHSIG/Ed25519 check was independently reproduced with the standard OpenSSH `ssh-keygen -Y verify` command in run #39456930057. OpenSSH_9.6p1 / OpenSSL 3.0.13 verified the historical exact bytes and rejected the current amended bytes. The allowed_signers key and signature are repository-bound inputs; they are not an external trust anchor for constitutional authority.
 
 | Target bytes | Result | Meaning |
 |---|---|---|
@@ -88,7 +88,7 @@ These are conflicting claims with different asserted status and legal/constituti
 | Does the historical M1 Markdown validate against that signature? | YES — historical exact bytes returned PASS. |
 | Is M1 legally/constitutionally revoked or closed by this technical check? | NOT DETERMINED. A signature mismatch alone does not decide that question. |
 | Is DQ-006 closed? | Current closure package says OPEN. |
-| Is the BETA PR CI green? | No checks observed; do not infer PASS. |
+| What was the result of BETA workflow run #39456930057? | Schema-validation job PASS; strict M1 signature gate FAIL; aggregate workflow FAIL, as intended. Run checked out PR merge commit `4f98747b9e4bc7097e5fd8249f15a351edd06ac9`; it does not validate the later PR head `4a59c5352a2ce1bd768980d4ef530989a11048c6`. |
 | Can BETA make protocol decisions effective? | NO. It is a non-canonical design/integration workspace. |
 
 ## 7. Recommended next actions
@@ -104,7 +104,7 @@ This document records a bounded technical observation and proposed work. It has 
 
 ## 8. Independent reproduction with OpenSSH
 
-The verification above used a local SSHSIG-envelope parser and Ed25519 verification implementation following the OpenSSH SSHSIG signed-message format. A second review can reproduce the result from a clean clone using the standard OpenSSH verifier.
+The standard OpenSSH reproduction is complete; the following commands are retained as a repeatable independent procedure. The recorded Action run is evidence for the exact inputs and environment stated below, but is not a governance ratification or an external determination of signer authority.
 
 ```bash
 git clone https://github.com/vaidt/aura-specification.git /tmp/aura-specification
