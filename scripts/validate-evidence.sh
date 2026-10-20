@@ -41,6 +41,11 @@ echo "== 2. Compile the BETA evidence registry schema =="
 run_ajv compile --spec=draft2020 --strict=false -c ajv-formats -s "$SCHEMA_ROOT/evidence-record.schema.json"
 
 echo
+echo "== 2b. Compile the BETA verification report schema =="
+run_ajv compile --spec=draft2020 --strict=false --validate-formats=true -c ajv-formats \
+  -s "$SCHEMA_ROOT/verification-report.schema.json"
+
+echo
 echo "== 3. Compile the pinned APS-300 draft evidence object and pack schemas =="
 run_ajv compile --spec=draft2020 --strict=false --validate-formats=true -c ajv-formats \
   -s "$SCHEMA_ROOT/aps300-draft/evidence-object.schema.json"
@@ -62,6 +67,32 @@ run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-error
 run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
   -s "$SCHEMA_ROOT/evidence-record.schema.json" \
   -d tests/fixtures/invalid/evidence-record-extra-field.json --invalid
+
+echo
+echo "== 4b. Verification report contract regression tests =="
+REPORT_SCHEMA="$SCHEMA_ROOT/verification-report.schema.json"
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/valid-technical-pass-governance-blocked.json --valid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/valid-signature-fail.json --valid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/valid-input-digest-mismatch-ssh-blocked.json --valid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/invalid/missing-overall-reason-code.json --invalid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/invalid/governance-pass-unproven-authority.json --invalid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/invalid/overall-pass-without-aps300-records.json --invalid
+run_ajv test --spec=draft2020 --strict=false --validate-formats=true --all-errors -c ajv-formats \
+  -s "$REPORT_SCHEMA" \
+  -d tests/fixtures/verification-report/invalid/aps300-present-on-draft-source.json --invalid
+node scripts/check-verification-report-invariants.js
 
 echo
 echo "== 5. Validate every JSON file under evidence/ =="
