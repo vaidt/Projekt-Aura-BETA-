@@ -1525,10 +1525,7 @@
                 "required": [
                   "source_schema_status"
                 ]
-              },
-              "required": [
-                "snapshot"
-              ]
+              }
             },
             "required": [
               "snapshot"
@@ -1554,10 +1551,7 @@
                 "required": [
                   "schema_id_namespace_status"
                 ]
-              },
-              "required": [
-                "snapshot"
-              ]
+              }
             },
             "required": [
               "snapshot"
