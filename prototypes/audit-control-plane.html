@@ -39,11 +39,11 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
     <div class="build-id">PANEL / v0.1-draft<br>BUILD: UI-ONLY<br>DATA: INHERITED SAMPLE</div>
   </section>
 
-  <div class="notice"><div class="mark">⚠</div><div><b>TRYB DEMO — BRAK WERYFIKACJI LIVE</b><p>Widoczne pozycje to odziedziczone ustalenia i przykładowe rekordy do przeglądu. Nie wykonano tu odczytu bieżących branchy, commitów ani workflow źródeł AURA. Ten panel nie dowodzi zgodności, ratyfikacji ani aktualności danych.</p></div></div>
+  <div class="notice"><div class="mark">⚠</div><div><b>TRYB DEMO — BRAK WERYFIKACJI LIVE</b><p>Panel nadal jest statyczny i nie synchronizuje się automatycznie. Poza panelem wykonano ograniczony odczyt HEAD-ów, wybranych workflow i weryfikację podpisu M1; wyniki zapisano w SOURCE_BASELINE_2026-10-20.md. Pozostałe rekordy nadal wymagają odświeżenia.</p></div></div>
 
   <section id="page-overview" class="page active">
     <div class="metrics">
-      <div class="metric"><div class="label">Źródła sprawdzone live</div><div class="number accent">0</div><div class="foot">Kolektory jeszcze nie istnieją</div></div>
+      <div class="metric"><div class="label">Kolektory podłączone live</div><div class="number accent">0</div><div class="foot">BETA nie synchronizuje jeszcze źródeł</div></div>
       <div class="metric"><div class="label">Uruchomione kontrole</div><div class="number">0</div><div class="foot">Brak wyników verifiera w tym repo</div></div>
       <div class="metric"><div class="label">Odziedziczone blokery</div><div class="number warnnum">3</div><div class="foot">Wymagają ponownej weryfikacji</div></div>
       <div class="metric"><div class="label">Rekordy live w rejestrze</div><div class="number">0</div><div class="foot">Schema jest propozycją, nie bazą danych</div></div>
@@ -54,7 +54,7 @@ button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-
         <h3>Stan odziedziczony — wymaga potwierdzenia</h3><p class="sub">Nie jest wynikiem automatycznego audytu wykonanego dziś.</p>
         <div class="status-row"><div><b>M1 · Ciągłość uprawnień</b><small>Źródło: wcześniejsze materiały governance; aktualność niepotwierdzona.</small></div><span class="badge blocked">NOT PROVEN</span></div>
         <div class="status-row"><div><b>P-008 · Ratification gate</b><small>Poprzedni zapis wskazuje PROPOSED; w tym panelu nie zatwierdzono zmiany normatywnej.</small></div><span class="badge proposed">PROPOSED / BLOCKED</span></div>
-        <div class="status-row"><div><b>Specyfikacja · kompletność</b><small>Macierz z 2026-08-18 wskazywała FROZEN-BLOCKED; wymaga odczytu aktualnego HEAD.</small></div><span class="badge stale">HISTORICAL</span></div>
+        <div class="status-row"><div><b>M1 · podpis a treść bieżącego rekordu</b><small>Podpis SSH weryfikuje historyczne bajty; nie weryfikuje aktualnej treści po ostrzeżeniu z 17.10.2026.</small></div><span class="badge blocked">SIGNATURE MISMATCH</span></div>
         <div class="notice-inline">Interpretacja: stan odziedziczony jest punktem startowym inwentaryzacji, a nie certyfikatem aktualnego stanu repozytoriów.</div>
       </div>
       <div class="card">
@@ -131,7 +131,7 @@ const evidence = [
  {id:"EVID-GOV-M1-001",claim:"M1 / authority continuity",source:"Wcześniejszy zapis M1 governance",revision:"Historical snapshot · exact source revision not yet bound",availability:"STALE",result:"INCONCLUSIVE",limit:"Wymaga ponownej kontroli źródła konstytutywnego, kompetencji i aktualnej ważności."},
  {id:"EVID-GOV-P008-002",claim:"P-008 ratification state",source:"Wcześniejsza dyspozycja governance",revision:"Historical snapshot · exact source revision not yet bound",availability:"STALE",result:"NOT_RUN",limit:"W tym repo nie wykonano weryfikacji ratyfikacji ani kompetencji."},
  {id:"EVID-SPEC-MATRIX-003",claim:"Specification completion",source:"SPECIFICATION_COMPLETION_MATRIX, audit date 2026-08-18",revision:"Supplied snapshot · live HEAD not checked",availability:"STALE",result:"NOT_RUN",limit:"Raport historyczny nie przesądza o stanie repo w dniu 2026-10-20."},
- {id:"EVID-REPO-BETA-004",claim:"BETA repository bootstrap",source:"GitHub integration result for vaidt/Projekt-Aura-BETA-",revision:"Empty repository at discovery; bootstrap README commit recorded",availability:"PRESENT",result:"PASS",limit:"Potwierdza tylko fakt inicjalizacji workspace; nie potwierdza protokołu ani zgodności."}
+ {id:"EVID-REPO-BETA-004",claim:"BETA repository bootstrap",source:"GitHub integration result for vaidt/Projekt-Aura-BETA-",revision:"Bootstrap README commit + alpha PR branch",availability:"PRESENT",result:"PASS",limit:"Potwierdza tylko inicjalizację workspace; nie potwierdza protokołu ani zgodności."},\n {id:"EVID-GOV-M1-SIG-004",claim:"Historical M1 exact bytes",source:"AURA_M1_CLOSURE_RECORD_v1.0.md at commit 6028ceda",revision:"Signed revision · SHA-512 digest verified against SSHSIG",availability:"PRESENT",result:"PASS",limit:"Dowodzi kryptograficznego dopasowania do klucza z allowed_signers; nie dowodzi samodzielnie kompetencji konstytucyjnej."},\n {id:"EVID-GOV-M1-SIG-005",claim:"Current M1 bytes vs attached .sig",source:"Current M1 file at vaidt/aura-specification main",revision:"HEAD 991274eed57d5b3308b0607feeb4d01e6a485974 · blob 1dde9631…",availability:"PRESENT",result:"FAIL",limit:"Załączony podpis nie weryfikuje bieżących bajtów po dodaniu ostrzeżenia 17.10.2026; nie jest to samoistna decyzja o ważności aktu."}
 ];
 const gates = [
  {id:"G0",name:"Authority continuity",status:"BLOCKED"},
@@ -161,7 +161,7 @@ document.getElementById("evidenceFilter").addEventListener("change",drawEvidence
 document.getElementById("exportBtn").addEventListener("click",()=>{
  const snapshot={
   meta:{title:"AURA BETA — Evidence-first Control Plane",version:"0.1-draft",mode:"STATIC_PROTOTYPE_NO_LIVE_SYNC",generated_at:new Date().toISOString(),normative_effect:"NONE"},
-  verified_live_sources:0,checks_run_in_this_repo:0,
+  connected_live_sources:0,checks_run_inside_panel:0,source_baseline:"docs/assurance/SOURCE_BASELINE_2026-10-20.md",
   disclaimer:"Inherited/sample records only. This export does not prove currentness, authority, ratification, protocol conformance, or production readiness.",
   evidence_records:evidence,governance_gates:gates,
   decisions:[
