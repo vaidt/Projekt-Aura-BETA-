@@ -31,7 +31,11 @@ jobs:
 
       - name: Commit the generated lockfile to this work branch only
         run: |
-          if git diff --quiet -- tools/schema-validator/package-lock.json; then
+          if [[ ! -f tools/schema-validator/package-lock.json ]]; then
+            echo "::error::npm did not create tools/schema-validator/package-lock.json"
+            exit 1
+          fi
+          if ! git status --short -- tools/schema-validator/package-lock.json | grep -q .; then
             echo "No lockfile changes to commit."
             exit 0
           fi
