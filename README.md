@@ -2,7 +2,7 @@
 
 > **Repository bootstrap:** 2026-10-20  
 > **Workspace:** `vaidt/Projekt-Aura-BETA-`  
-> **Status:** BOOTSTRAP · NON-NORMATIVE · NO PRODUCT RELEASE CLAIM
+> **Status:** BOOTSTRAP · NON-NORMATIVE · ENGINEERING / CONTROL-PLANE WORKSPACE · NO PRODUCT RELEASE CLAIM
 
 ## Purpose
 
@@ -22,6 +22,16 @@ The repository follows these distinctions:
 - A test suite does not become a conformance authority merely by passing.
 - A dashboard label is not evidence unless it resolves to inspectable, revision-bound evidence.
 - A design proposal has no normative effect unless the required authority and ratification path are independently established.
+
+## Evidence reporting boundary
+
+The control plane may report the result of a defined verifier for identified inputs and revisions. It must not infer authority, ratification, or normative effect from repository state, a signature, a workflow identity, a passing CI run, or a dashboard label.
+
+For every reported gate result, record the repository, immutable commit, input/evidence digests where relevant, verifier version, trust configuration, execution result, and limitations. Keep local test results separate from public workflow results and keep unmerged PR results separate from `main`.
+
+Schema validity, cryptographic validity, semantic conformance, and governance authority are separate findings.
+
+> **Scope boundary:** AURA BETA reports evidence and gate outcomes within declared rules; it does not itself close G1 or ratify the protocol.
 
 ## Target architecture (proposed; not yet normative)
 
