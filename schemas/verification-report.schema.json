@@ -1,0 +1,1159 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:aura-beta:verification-report:0.1.0-draft",
+  "title": "AURA BETA Verification Report",
+  "description": "NON-NORMATIVE BETA workspace contract for local verification reports. It records exact-byte observations and separates technical, SSH signature, governance, and aggregate outcomes. It does not ratify AURA protocol semantics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "report_id",
+    "report_type",
+    "schema_version",
+    "normative_effect",
+    "created_at",
+    "scope",
+    "source_bindings",
+    "verifier",
+    "execution",
+    "byte_evidence",
+    "technical_result",
+    "ssh_signature_gate",
+    "governance_gate",
+    "overall_result",
+    "limitations"
+  ],
+  "properties": {
+    "report_id": {
+      "type": "string",
+      "pattern": "^AURA-BETA-VER-[A-Z0-9][A-Z0-9._-]{2,63}$"
+    },
+    "report_type": {
+      "const": "AURA_BETA_VERIFICATION_REPORT"
+    },
+    "schema_version": {
+      "const": "0.1.0-draft"
+    },
+    "normative_effect": {
+      "const": "NONE"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "claim_id",
+        "description",
+        "policy_id",
+        "in_scope",
+        "out_of_scope"
+      ],
+      "properties": {
+        "claim_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "in_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "out_of_scope": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    },
+    "source_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/sourceBinding"
+      }
+    },
+    "verifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "distribution",
+        "binary_sha256",
+        "source_binding_id"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "distribution": {
+          "type": "string",
+          "minLength": 1
+        },
+        "binary_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "source_binding_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution_id",
+        "invocation",
+        "environment",
+        "started_at",
+        "finished_at",
+        "process_state",
+        "process_exit_code",
+        "stdin_artifact_id",
+        "stdout_artifact_id",
+        "stderr_artifact_id"
+      ],
+      "properties": {
+        "execution_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "invocation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "executable",
+            "argv",
+            "working_directory"
+          ],
+          "properties": {
+            "executable": {
+              "type": "string",
+              "minLength": 1
+            },
+            "argv": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "working_directory": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "os",
+            "architecture",
+            "runtime",
+            "network_policy",
+            "network_accessed"
+          ],
+          "properties": {
+            "os": {
+              "type": "string",
+              "minLength": 1
+            },
+            "architecture": {
+              "type": "string",
+              "minLength": 1
+            },
+            "runtime": {
+              "type": "string",
+              "minLength": 1
+            },
+            "network_policy": {
+              "enum": [
+                "OFFLINE_REQUIRED",
+                "NETWORK_DISABLED",
+                "NETWORK_ALLOWED"
+              ]
+            },
+            "network_accessed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "started_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "finished_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "process_state": {
+          "enum": [
+            "EXITED",
+            "NOT_STARTED",
+            "SPAWN_ERROR"
+          ]
+        },
+        "process_exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        },
+        "stdin_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stdout_artifact_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stderr_artifact_id": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "process_state": {
+                "const": "EXITED"
+              }
+            },
+            "required": [
+              "process_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "process_exit_code": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 255
+              },
+              "started_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "finished_at": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "process_state": {
+                "enum": [
+                  "NOT_STARTED",
+                  "SPAWN_ERROR"
+                ]
+              }
+            },
+            "required": [
+              "process_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "process_exit_code": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "byte_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "manifest_sha256",
+        "artifacts"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED"
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "NONE",
+            "INPUT_DIGEST_MISMATCH",
+            "OUTPUT_DIGEST_MISMATCH",
+            "MANIFEST_DIGEST_MISMATCH",
+            "MISSING_ARTIFACT",
+            "UNKNOWN"
+          ]
+        },
+        "manifest_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "artifacts": {
+          "type": "array",
+          "minItems": 3,
+          "items": {
+            "$ref": "#/$defs/byteArtifact"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "const": "NONE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "FAIL",
+                  "BLOCKED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "technical_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "cause_code",
+        "summary"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED"
+          ]
+        },
+        "cause_code": {
+          "enum": [
+            "NONE",
+            "VERIFIER_EXIT_NONZERO",
+            "TOOL_UNAVAILABLE",
+            "EXECUTION_ERROR",
+            "INPUT_DIGEST_MISMATCH",
+            "OUTPUT_DIGEST_MISMATCH",
+            "MISSING_INPUT",
+            "CONTRACT_UNRESOLVED",
+            "UNKNOWN"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "cause_code": {
+                "const": "NONE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "FAIL",
+                  "BLOCKED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "cause_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ssh_signature_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "cause_code",
+        "tool",
+        "identity",
+        "namespace",
+        "public_key_fingerprint",
+        "message_artifact_id",
+        "signature_artifact_id",
+        "allowed_signers_artifact_id",
+        "stdout_artifact_id",
+        "stderr_artifact_id",
+        "exit_code"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED",
+            "NOT_RUN"
+          ]
+        },
+        "cause_code": {
+          "enum": [
+            "NONE",
+            "SIGNATURE_INVALID",
+            "INPUT_MISSING",
+            "INPUT_DIGEST_MISMATCH",
+            "KEY_NOT_TRUSTED",
+            "IDENTITY_MISMATCH",
+            "NAMESPACE_MISMATCH",
+            "TOOL_UNAVAILABLE",
+            "EXECUTION_ERROR",
+            "NOT_EXECUTED",
+            "UNKNOWN"
+          ]
+        },
+        "tool": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "name",
+            "version",
+            "binary_sha256"
+          ],
+          "properties": {
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "binary_sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          }
+        },
+        "identity": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "namespace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "public_key_fingerprint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^SHA256:[A-Za-z0-9+/]{20,64}$"
+        },
+        "message_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "signature_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "allowed_signers_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stdout_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stderr_artifact_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exit_code": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 255
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "cause_code": {
+                "const": "NONE"
+              },
+              "exit_code": {
+                "const": 0
+              },
+              "identity": {
+                "type": "string",
+                "minLength": 1
+              },
+              "namespace": {
+                "type": "string",
+                "minLength": 1
+              },
+              "public_key_fingerprint": {
+                "type": "string",
+                "pattern": "^SHA256:[A-Za-z0-9+/]{20,64}$"
+              },
+              "message_artifact_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "signature_artifact_id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "allowed_signers_artifact_id": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "FAIL"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "cause_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              },
+              "exit_code": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 255
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "BLOCKED",
+                  "NOT_RUN"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "cause_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              },
+              "exit_code": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "governance_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "rule_id",
+        "authority_continuity",
+        "ratification_status",
+        "evidence_refs",
+        "decision_authority_ref"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED"
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "NONE",
+            "AUTHORITY_CONTINUITY_NOT_PROVEN",
+            "RATIFICATION_NOT_ESTABLISHED",
+            "CONFLICTED_SOURCE_AUTHORITY",
+            "REQUIRED_TECHNICAL_CHECK_FAILED",
+            "REQUIRED_EVIDENCE_MISSING",
+            "POLICY_NOT_APPROVED",
+            "GOVERNANCE_NOT_EVALUATED",
+            "UNKNOWN"
+          ]
+        },
+        "rule_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "authority_continuity": {
+          "enum": [
+            "ESTABLISHED",
+            "NOT_PROVEN",
+            "CONFLICTED",
+            "NOT_ASSESSED"
+          ]
+        },
+        "ratification_status": {
+          "enum": [
+            "RATIFIED",
+            "NOT_ESTABLISHED",
+            "CONFLICTED",
+            "NOT_ASSESSED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "decision_authority_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "const": "NONE"
+              },
+              "authority_continuity": {
+                "const": "ESTABLISHED"
+              },
+              "ratification_status": {
+                "const": "RATIFIED"
+              },
+              "evidence_refs": {
+                "minItems": 1
+              },
+              "decision_authority_ref": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "FAIL",
+                  "BLOCKED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "overall_result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "policy_id",
+        "summary"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "BLOCKED"
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "NONE",
+            "TECHNICAL_CHECK_FAILED",
+            "BYTE_INTEGRITY_FAILED",
+            "SSH_SIGNATURE_INVALID",
+            "GOVERNANCE_GATE_BLOCKED",
+            "REQUIRED_INPUT_MISSING",
+            "CONTRACT_UNRESOLVED",
+            "UNKNOWN"
+          ]
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "const": "NONE"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "FAIL",
+                  "BLOCKED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository_uri",
+        "repository_name",
+        "commit_sha",
+        "path",
+        "git_blob_sha1",
+        "content_sha256"
+      ],
+      "properties": {
+        "repository_uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "repository_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "git_blob_sha1": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "content_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "byteArtifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_id",
+        "role",
+        "capture_method",
+        "byte_length",
+        "sha256",
+        "git_blob_sha1",
+        "expected_sha256",
+        "comparison_status",
+        "path",
+        "artifact_uri",
+        "media_type"
+      ],
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^ART-[A-Z0-9][A-Z0-9._-]{2,63}$"
+        },
+        "role": {
+          "enum": [
+            "SIGNED_MESSAGE",
+            "SSHSIG_FILE",
+            "ALLOWED_SIGNERS",
+            "VERIFIER_STDIN",
+            "VERIFIER_STDOUT",
+            "VERIFIER_STDERR",
+            "SSH_STDOUT",
+            "SSH_STDERR",
+            "INPUT_MANIFEST",
+            "LOG",
+            "OTHER"
+          ]
+        },
+        "capture_method": {
+          "enum": [
+            "RAW_FILE_BYTES",
+            "PROCESS_STDIN",
+            "PROCESS_STDOUT",
+            "PROCESS_STDERR",
+            "GIT_HASH_OBJECT_NO_FILTERS",
+            "DERIVED_MANIFEST",
+            "OTHER"
+          ]
+        },
+        "byte_length": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "git_blob_sha1": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "expected_sha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "comparison_status": {
+          "enum": [
+            "MATCH",
+            "MISMATCH",
+            "NOT_APPLICABLE",
+            "NOT_CHECKED"
+          ]
+        },
+        "path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "artifact_uri": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "media_type": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparison_status": {
+                "const": "MATCH"
+              }
+            },
+            "required": [
+              "comparison_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expected_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "comparison_status": {
+                "const": "MISMATCH"
+              }
+            },
+            "required": [
+              "comparison_status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "expected_sha256": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "overall_result": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        },
+        "required": [
+          "overall_result"
+        ]
+      },
+      "then": {
+        "properties": {
+          "byte_evidence": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "technical_result": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "ssh_signature_gate": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          },
+          "governance_gate": {
+            "properties": {
+              "status": {
+                "const": "PASS"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
