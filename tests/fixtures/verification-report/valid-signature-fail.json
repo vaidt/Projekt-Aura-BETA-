@@ -66,14 +66,14 @@
     "started_at": "2026-10-20T19:59:59Z",
     "finished_at": "2026-10-20T20:00:00Z",
     "process_state": "EXITED",
-    "process_exit_code": 23,
+    "process_exit_code": 255,
     "stdin_artifact_id": "ART-STDIN-001",
     "stdout_artifact_id": "ART-STDOUT-001",
     "stderr_artifact_id": "ART-STDERR-001"
   },
   "byte_evidence": {
-    "status": "FAIL",
-    "reason_code": "INPUT_DIGEST_MISMATCH",
+    "status": "PASS",
+    "reason_code": "NONE",
     "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
     "artifacts": [
       {
@@ -81,10 +81,10 @@
         "role": "SIGNED_MESSAGE",
         "capture_method": "RAW_FILE_BYTES",
         "byte_length": 2182,
-        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "git_blob_sha1": "1111111111111111111111111111111111111111",
         "expected_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-        "comparison_status": "MISMATCH",
+        "comparison_status": "MATCH",
         "path": "synthetic/M1-record.md",
         "artifact_uri": null,
         "media_type": "application/octet-stream"
@@ -120,9 +120,9 @@
         "role": "VERIFIER_STDIN",
         "capture_method": "PROCESS_STDIN",
         "byte_length": 2182,
-        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "git_blob_sha1": null,
-        "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "expected_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
         "comparison_status": "MATCH",
         "path": null,
         "artifact_uri": null,
@@ -184,12 +184,12 @@
   },
   "technical_result": {
     "status": "FAIL",
-    "cause_code": "INPUT_DIGEST_MISMATCH",
-    "summary": "Synthetic failure fixture: a required source digest mismatches its pinned expected value."
+    "cause_code": "VERIFIER_EXIT_NONZERO",
+    "summary": "Synthetic SSH verification failure: input byte digests match their expected digests, but OpenSSH rejects the signature."
   },
   "ssh_signature_gate": {
-    "status": "BLOCKED",
-    "cause_code": "INPUT_DIGEST_MISMATCH",
+    "status": "FAIL",
+    "cause_code": "SIGNATURE_INVALID",
     "tool": {
       "name": "ssh-keygen -Y verify",
       "version": "OpenSSH_9.6p1 (synthetic fixture)",
@@ -197,13 +197,13 @@
     },
     "identity": "test@example.invalid",
     "namespace": "aura-governance",
-    "public_key_fingerprint": null,
+    "public_key_fingerprint": "SHA256:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
     "message_artifact_id": "ART-MESSAGE-001",
     "signature_artifact_id": "ART-SIGNATURE-001",
     "allowed_signers_artifact_id": "ART-SIGNERS-001",
-    "stdout_artifact_id": null,
-    "stderr_artifact_id": null,
-    "exit_code": null
+    "stdout_artifact_id": "ART-SSH-STDOUT-001",
+    "stderr_artifact_id": "ART-SSH-STDERR-001",
+    "exit_code": 255
   },
   "governance_gate": {
     "status": "BLOCKED",
@@ -218,9 +218,9 @@
   },
   "overall_result": {
     "status": "FAIL",
-    "reason_code": "BYTE_INTEGRITY_FAILED",
+    "reason_code": "SSH_SIGNATURE_INVALID",
     "policy_id": "BETA-VERIFY-POLICY-DRAFT-0.1",
-    "summary": "Synthetic failure fixture: byte integrity failed; SSH was blocked from running on untrusted inputs."
+    "summary": "Synthetic SSH failure: byte integrity passed, OpenSSH signature verification failed, governance remains blocked."
   },
   "limitations": [
     "Synthetic fixture only; SHA values and artifact details are illustrative, not evidence of real bytes.",
