@@ -57,7 +57,7 @@ The execution record stores `argv` as an array, not a shell command string. It r
 
 Runtime objective remains local-first and zero-cloud. CI may use Ajv to validate the draft schema, but the eventual verifier CLI should not require a database, web UI, or network service.
 
-## 7. Limitations and decision boundary
+## 8. Limitations and decision boundary
 
 - Schema validity is structural validity, not protocol conformance or governance adjudication.
 - The schema does not determine canonical serialization or a protocol-level hash preimage.
@@ -65,7 +65,7 @@ Runtime objective remains local-first and zero-cloud. CI may use Ajv to validate
 - APS-300 snapshots remain DRAFT; this is independent BETA metadata, not a reinterpretation of APS-300.
 - No runner implementation is included in this change.
 
-## 8. Acceptance criteria
+## 9. Acceptance criteria
 
 1. Draft schema compiles under JSON Schema Draft 2020-12.
 2. A synthetic byte PASS + SSH PASS + governance BLOCKED report is accepted.
