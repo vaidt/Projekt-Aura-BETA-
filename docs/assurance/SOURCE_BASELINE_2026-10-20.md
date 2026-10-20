@@ -100,3 +100,30 @@ These are conflicting claims with different asserted status and legal/constituti
 5. Re-run current CI and independent conformance only after source revisions, fixtures, and expected-result authority are bound.
 
 This document records a bounded technical observation and proposed work. It has no normative effect on AURA.
+
+
+## 8. Independent reproduction with OpenSSH
+
+The verification above used a local SSHSIG-envelope parser and Ed25519 verification implementation following the OpenSSH SSHSIG signed-message format. A second review can reproduce the result from a clean clone using the standard OpenSSH verifier.
+
+```bash
+git clone https://github.com/vaidt/aura-specification.git /tmp/aura-specification
+cd /tmp/aura-specification
+
+git show 6028ceda886db062488b29578d573f5826968d32:AURA_M1_CLOSURE_RECORD_v1.0.md > /tmp/m1-historical.md
+git show 991274eed57d5b3308b0607feeb4d01e6a485974:AURA_M1_CLOSURE_RECORD_v1.0.md > /tmp/m1-current.md
+git show 991274eed57d5b3308b0607feeb4d01e6a485974:AURA_M1_CLOSURE_RECORD_v1.0.md.sig > /tmp/m1-current.sig
+git show 091ab7a88ee626caa536c641fa3cee53a6e008df:allowed_signers > /tmp/aura-allowed-signers
+
+# Expected exit code 0: the historical bytes are signed.
+ssh-keygen -Y verify -f /tmp/aura-allowed-signers \
+  -I kontakt.vaidt@gmail.com -n aura-governance \
+  -s /tmp/m1-current.sig < /tmp/m1-historical.md
+
+# Expected non-zero exit code: the warning amendment is not covered by that signature.
+ssh-keygen -Y verify -f /tmp/aura-allowed-signers \
+  -I kontakt.vaidt@gmail.com -n aura-governance \
+  -s /tmp/m1-current.sig < /tmp/m1-current.md
+```
+
+For the independent run, record the OpenSSH version, both exit codes, stderr/stdout, and the exact checked-out commit IDs. If the expected outcomes differ, mark the finding `INCONCLUSIVE` and investigate; do not suppress or reinterpret the discrepancy. The signer allow-list comes from the same repository history and therefore provides a cryptographic verification key input, not an external trust anchor for constitutional authority.
