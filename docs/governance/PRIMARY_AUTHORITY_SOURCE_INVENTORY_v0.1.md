@@ -48,7 +48,7 @@ The textual facts above support a conflict between the document's frozen/version
 
 The declaration states that the signer converts technical ownership into constitutional Genesis Authority, enacts Article XIII, appoints the initial Chief Architect, and grants broad ratification / implementation powers. Those are **claims made by the instrument**. Signature verification is a separate technical question; competence, scope, and procedural effect must be independently established.
 
-PR #32 reports that the Genesis preimage digest matches its M1 reference and that Python `cryptography`, OpenSSL CLI, and Node.js crypto verified the signature over the inspected preimage. That same PR qualifies the results as different tool paths in one audit environment, not independent machines/backends, and says OpenSSH, signing time, revocation status, and independent identity binding were not yet established by that audit. The new BETA workflow in this PR performs a source-pinned OpenSSH observation; its results must be read from the run and recorded separately below.
+PR #32 reports that the Genesis preimage digest matches its M1 reference and that Python `cryptography`, OpenSSL CLI, and Node.js crypto verified the signature over the inspected preimage. That PR qualifies those results as different tool paths in one audit environment, not independent machines/backends. A separate source-pinned OpenSSH observation in [BETA workflow run #39472439876](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876) verified the Genesis signature over the exact pinned preimage: **PASS / exit 0**. The same run verified the exact current bytes of `AUTHORITY_BINDING_RECORD_v1.1.md` and `AURA_P008_RATIFICATION_RECORD_v1.0.md` under the same repository-sourced allow-list: both **PASS / exit 0**. All source Git blob SHA-1 pins and the Genesis SHA-256 matched. These results establish the tested signature-to-bytes relationships under that key input; signing time, independent natural-person identity binding, prior issuer competence, canonical-repository designation, and constitutional procedure remain separate unresolved questions.
 
 ### 2.3 Authority/identity binding record
 
@@ -65,7 +65,7 @@ PR #32 reports that the Genesis preimage digest matches its M1 reference and tha
 
 The record's own assertions do not independently prove the identity claim, exclusive control, issuer competence, or the authority to declare this binding record ratified. The public-key/allow-list source is repository-bound. Even a successful exact-byte signature check cannot validate a self-asserted trust anchor without an independently established authority basis.
 
-The current [Identity Bridge Draft v0.3](https://github.com/vaidt/aura-specification/blob/main/docs/governance/AURA-AUTHORITY-001-IDENTITY-BRIDGE-DRAFT-v0.3.md) explicitly states: competent issuer not established; independent identity proof not found/provided; external signed trust anchor URL and digest pending; signature artifact and effective date pending. It says its own purpose is to define a process, not to establish who currently has authority.
+The current [Identity Bridge Draft v0.3](https://github.com/vaidt/aura-specification/blob/main/docs/governance/AURA-AUTHORITY-001-IDENTITY-BRIDGE-DRAFT-v0.3.md) explicitly states: competent issuer not established; independent identity proof not found/provided; external signed trust anchor URL and digest pending; signature artifact and effective date pending. This is not contradicted by the OpenSSH PASS results: those results validate exact bytes against a repository-sourced key, not the independent identity/competence chain. The draft says its purpose is to define a process, not to establish who currently has authority.
 
 ### 2.4 P-008 record and M1 status conflict
 
@@ -77,7 +77,7 @@ The current [Identity Bridge Draft v0.3](https://github.com/vaidt/aura-specifica
 | Later content | A later section states `Normative_Effect: EFFECTIVE` for the stated P-008 scope |
 | M1 closure claim | The current M1 closure record says P-008 was `EXECUTED` and asserts `M1_Governance_Gate: CLOSED`; current M1 bytes do not verify against its attached signature |
 
-This is a material source-level status inconsistency. Neither the signed-byte relationship nor the status reconciliation for P-008 should be assumed from M1's assertion. The current inventory treats P-008 ratification as **CONFLICTED / NOT ESTABLISHED** until the exact signed content, competent issuer, and authoritative status transition are established.
+This is a material source-level status inconsistency. OpenSSH verified the current P-008 bytes against the attached signature (**PASS / exit 0**, run #39472439876), so the conflict is not a signature-to-bytes mismatch for this current record. It is a conflict in status assertions and authority/effectiveness. The signature does not choose which status is controlling. The current inventory therefore treats P-008 ratification as **CONFLICTED / NOT ESTABLISHED** until the competent issuer and authoritative status transition are established.
 
 ### 2.5 M1 closure record
 
@@ -120,12 +120,18 @@ PR #1 is open, Draft, and unmerged. Its status is verified; the technical enforc
 
 ## 6. OpenSSH exact-byte observation
 
-The new workflow `Authority Source Byte & Signature Observation` downloads the candidate artifacts from immutable Git commit URLs, verifies their Git blob SHAs and the declared Genesis SHA-256, then runs standard `ssh-keygen -Y verify` over:
-1. Genesis Declaration in namespace `aura-genesis`;
-2. Authority Binding v1.1 in namespace `aura-governance`;
-3. current P-008 record in namespace `aura-governance`.
+The source-pinned observation completed in [workflow run #39472439876](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876). Environment: OpenSSH_9.6p1 Ubuntu-3ubuntu13.20 / OpenSSL 3.0.13. The PR branch head was `89fab12a9310dd72b243db2b3130d9d189d4b`; the workflow checked out merge ref `72883b1f607612be19fbcea4490f89125215c7e3`. All required Git blob SHA-1 pins and the declared Genesis SHA-256 matched.
 
-**Observation result:** pending the first completed run on this source inventory commit. The workflow is observational: a PASS result for that job means inputs were pinned and observations recorded; each signature's result is separately reported as PASS/FAIL with exit code. The existing strict M1 signature workflow remains the blocking gate. A successful signature check still would not prove issuer competence or normative effect.
+| Artifact / namespace | Exact-byte result | Meaning |
+|---|---|---|
+| Genesis Declaration / `aura-genesis` | **PASS · exit 0** | Signature validates the pinned declaration bytes against the pinned repository-sourced `allowed_signers` entry. |
+| Authority Binding v1.1 / `aura-governance` | **PASS · exit 0** | Signature validates the pinned current record bytes under the same tested key input. |
+| Current P-008 record / `aura-governance` | **PASS · exit 0** | Signature validates the pinned current record bytes; internal status conflict remains unresolved. |
+| M1 current amended record / `aura-governance` | **FAIL · exit 255** | Separate strict M1 workflow continues to reject current bytes against the attached signature. |
+
+The Genesis SHA-256 was `6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6`, matching the value referenced in M1 and PR #32. Planned durable registry records are `EVID-GOV-GENESIS-SIG-006`, `EVID-GOV-AUTHORITY-BINDING-SIG-007`, and `EVID-GOV-P008-SIG-008`. The run attached an observation JSON artifact.
+
+The observation job is informational: its job PASS means pinned inputs were retrieved and results recorded, not that every relevant signature passed or that governance authority was established. The aggregate workflow remains FAIL because the strict M1 gate fails. A successful signature check proves neither issuer competence, independent natural-person identity, canonical-repository designation, effective date, ratification procedure, nor normative effect.
 
 ## 7. Required next actions
 
