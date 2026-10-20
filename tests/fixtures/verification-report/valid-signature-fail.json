@@ -1,0 +1,230 @@
+{
+  "report_id": "AURA-BETA-VER-TEST-002",
+  "report_type": "AURA_BETA_VERIFICATION_REPORT",
+  "schema_version": "0.1.0-draft",
+  "normative_effect": "NONE",
+  "created_at": "2026-10-20T20:00:00Z",
+  "scope": {
+    "claim_id": "SYNTHETIC-REPORT-SCHEMA-TEST",
+    "description": "Synthetic fixture for report structure and status separation only; no real AURA artifact or authority is asserted.",
+    "policy_id": "BETA-VERIFY-POLICY-DRAFT-0.1",
+    "in_scope": [
+      "Schema structure",
+      "Status separation",
+      "Artifact-reference integrity"
+    ],
+    "out_of_scope": [
+      "Real signature verification",
+      "Protocol conformance",
+      "Authority continuity",
+      "P-008 ratification"
+    ]
+  },
+  "source_bindings": [
+    {
+      "repository_uri": "https://example.invalid/synthetic/aura-source",
+      "repository_name": "synthetic/aura-source",
+      "commit_sha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "path": "synthetic/M1-record.md",
+      "git_blob_sha1": "1111111111111111111111111111111111111111",
+      "content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ],
+  "verifier": {
+    "name": "ssh-keygen -Y verify",
+    "version": "OpenSSH_9.6p1 (synthetic fixture)",
+    "distribution": "synthetic schema fixture, not an actual tool invocation",
+    "binary_sha256": null,
+    "source_binding_id": null
+  },
+  "execution": {
+    "execution_id": "EXEC-TEST-001",
+    "invocation": {
+      "executable": "ssh-keygen",
+      "argv": [
+        "ssh-keygen",
+        "-Y",
+        "verify",
+        "-f",
+        "synthetic/allowed_signers",
+        "-I",
+        "test@example.invalid",
+        "-n",
+        "aura-governance",
+        "-s",
+        "synthetic/M1-record.md.sig"
+      ],
+      "working_directory": "/synthetic"
+    },
+    "environment": {
+      "os": "synthetic-linux",
+      "architecture": "x86_64",
+      "runtime": "schema-fixture",
+      "network_policy": "OFFLINE_REQUIRED",
+      "network_accessed": false
+    },
+    "started_at": "2026-10-20T19:59:59Z",
+    "finished_at": "2026-10-20T20:00:00Z",
+    "process_state": "EXITED",
+    "process_exit_code": 23,
+    "stdin_artifact_id": "ART-STDIN-001",
+    "stdout_artifact_id": "ART-STDOUT-001",
+    "stderr_artifact_id": "ART-STDERR-001"
+  },
+  "byte_evidence": {
+    "status": "FAIL",
+    "reason_code": "INPUT_DIGEST_MISMATCH",
+    "manifest_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "artifacts": [
+      {
+        "artifact_id": "ART-MESSAGE-001",
+        "role": "SIGNED_MESSAGE",
+        "capture_method": "RAW_FILE_BYTES",
+        "byte_length": 2182,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "git_blob_sha1": "1111111111111111111111111111111111111111",
+        "expected_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "comparison_status": "MISMATCH",
+        "path": "synthetic/M1-record.md",
+        "artifact_uri": null,
+        "media_type": "application/octet-stream"
+      },
+      {
+        "artifact_id": "ART-SIGNATURE-001",
+        "role": "SSHSIG_FILE",
+        "capture_method": "RAW_FILE_BYTES",
+        "byte_length": 310,
+        "sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "git_blob_sha1": "2222222222222222222222222222222222222222",
+        "expected_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "comparison_status": "MATCH",
+        "path": "synthetic/M1-record.md.sig",
+        "artifact_uri": null,
+        "media_type": "application/octet-stream"
+      },
+      {
+        "artifact_id": "ART-SIGNERS-001",
+        "role": "ALLOWED_SIGNERS",
+        "capture_method": "RAW_FILE_BYTES",
+        "byte_length": 118,
+        "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "git_blob_sha1": "3333333333333333333333333333333333333333",
+        "expected_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+        "comparison_status": "MATCH",
+        "path": "synthetic/allowed_signers",
+        "artifact_uri": null,
+        "media_type": "application/octet-stream"
+      },
+      {
+        "artifact_id": "ART-STDIN-001",
+        "role": "VERIFIER_STDIN",
+        "capture_method": "PROCESS_STDIN",
+        "byte_length": 2182,
+        "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "git_blob_sha1": null,
+        "expected_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+        "comparison_status": "MATCH",
+        "path": null,
+        "artifact_uri": null,
+        "media_type": "text/plain"
+      },
+      {
+        "artifact_id": "ART-STDOUT-001",
+        "role": "VERIFIER_STDOUT",
+        "capture_method": "PROCESS_STDOUT",
+        "byte_length": 34,
+        "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+        "git_blob_sha1": null,
+        "expected_sha256": null,
+        "comparison_status": "NOT_APPLICABLE",
+        "path": null,
+        "artifact_uri": null,
+        "media_type": "text/plain"
+      },
+      {
+        "artifact_id": "ART-STDERR-001",
+        "role": "VERIFIER_STDERR",
+        "capture_method": "PROCESS_STDERR",
+        "byte_length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "git_blob_sha1": null,
+        "expected_sha256": null,
+        "comparison_status": "NOT_APPLICABLE",
+        "path": null,
+        "artifact_uri": null,
+        "media_type": "text/plain"
+      },
+      {
+        "artifact_id": "ART-SSH-STDOUT-001",
+        "role": "SSH_STDOUT",
+        "capture_method": "PROCESS_STDOUT",
+        "byte_length": 48,
+        "sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "git_blob_sha1": null,
+        "expected_sha256": null,
+        "comparison_status": "NOT_APPLICABLE",
+        "path": null,
+        "artifact_uri": null,
+        "media_type": "text/plain"
+      },
+      {
+        "artifact_id": "ART-SSH-STDERR-001",
+        "role": "SSH_STDERR",
+        "capture_method": "PROCESS_STDERR",
+        "byte_length": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "git_blob_sha1": null,
+        "expected_sha256": null,
+        "comparison_status": "NOT_APPLICABLE",
+        "path": null,
+        "artifact_uri": null,
+        "media_type": "text/plain"
+      }
+    ]
+  },
+  "technical_result": {
+    "status": "FAIL",
+    "cause_code": "INPUT_DIGEST_MISMATCH",
+    "summary": "Synthetic failure fixture: a required source digest mismatches its pinned expected value."
+  },
+  "ssh_signature_gate": {
+    "status": "BLOCKED",
+    "cause_code": "INPUT_DIGEST_MISMATCH",
+    "tool": {
+      "name": "ssh-keygen -Y verify",
+      "version": "OpenSSH_9.6p1 (synthetic fixture)",
+      "binary_sha256": null
+    },
+    "identity": "test@example.invalid",
+    "namespace": "aura-governance",
+    "public_key_fingerprint": null,
+    "message_artifact_id": "ART-MESSAGE-001",
+    "signature_artifact_id": "ART-SIGNATURE-001",
+    "allowed_signers_artifact_id": "ART-SIGNERS-001",
+    "stdout_artifact_id": null,
+    "stderr_artifact_id": null,
+    "exit_code": null
+  },
+  "governance_gate": {
+    "status": "BLOCKED",
+    "reason_code": "REQUIRED_TECHNICAL_CHECK_FAILED",
+    "rule_id": "BETA-GOVERNANCE-BOUNDARY-DRAFT-0.1",
+    "authority_continuity": "NOT_PROVEN",
+    "ratification_status": "NOT_ESTABLISHED",
+    "evidence_refs": [
+      "SYNTHETIC-OBSERVATION-001"
+    ],
+    "decision_authority_ref": null
+  },
+  "overall_result": {
+    "status": "FAIL",
+    "reason_code": "BYTE_INTEGRITY_FAILED",
+    "policy_id": "BETA-VERIFY-POLICY-DRAFT-0.1",
+    "summary": "Synthetic failure fixture: byte integrity failed; SSH was blocked from running on untrusted inputs."
+  },
+  "limitations": [
+    "Synthetic fixture only; SHA values and artifact details are illustrative, not evidence of real bytes.",
+    "A valid signature over exact bytes does not independently prove signer competence, authority continuity, or ratification.",
+    "The schema is a BETA workspace proposal and has no normative effect on AURA."
+  ]
+}
