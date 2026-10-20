@@ -87,3 +87,12 @@ At bootstrap, no product implementation, evidence collector, verifier, data stor
 ## First review target
 
 See [Bootstrap Plan](docs/roadmap/BOOTSTRAP_PLAN.md), [Governance Status](docs/governance/PROJECT_STATUS.md), and [Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md). These are engineering proposals, not ratified protocol requirements.
+
+
+## Operational source-of-work policy
+
+For new project coordination, issue tracking, source/authority inventory, migration records, audit-control-plane work, and BETA-specific engineering changes, use this repository as the **single operational entry point**.
+
+This operational policy is intentionally narrower than a claim of absolute normative protocol authority. The specification namespace still contains conflicting canonical-source claims and the APS-300 contract remains marked DRAFT. BETA does not acquire ratification power by declaring itself a single operational workspace. Protocol-semantic changes and conformance claims must remain tied to source-bound evidence and the applicable competent governance procedure.
+
+The first partial archival batch and schema CI result are recorded in [Repository Consolidation Plan](docs/governance/REPOSITORY_CONSOLIDATION_PLAN.md), [Source Inventory](docs/architecture/SOURCE_INVENTORY_BOOTSTRAP.md), and [Project Status](docs/governance/PROJECT_STATUS.md).

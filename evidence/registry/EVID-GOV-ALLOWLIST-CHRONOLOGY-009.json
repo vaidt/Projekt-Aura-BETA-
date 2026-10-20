@@ -1,0 +1,48 @@
+{
+  "evidence_id": "EVID-GOV-ALLOWLIST-CHRONOLOGY-009",
+  "claim_id": "The allowed_signers path used for current Genesis and P-008 SSHSIG verification was introduced in the inspected repository after those artifacts",
+  "source_uri": "https://github.com/vaidt/aura-specification/commit/091ab7a88ee626caa536c641fa3cee53a6e008df",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "091ab7a88ee626caa536c641fa3cee53a6e008df",
+    "repository": "vaidt/aura-specification",
+    "path": "allowed_signers"
+  },
+  "content_digest": {
+    "algorithm": "Git blob SHA-1",
+    "value": "fa4fa29ed870f350f38157e9a1e15fe9654a6f86",
+    "scope": "allowed_signers content at commit 091ab7a88ee626caa536c641fa3cee53a6e008df"
+  },
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "GitHub commit-history and tree inspection",
+    "version": "GitHub REST API read; source tree SHA 991274eed57d5b3308b0607feeb4d01e6a485974",
+    "command_or_procedure": "Queried commits by path allowed_signers, checked its first/only path-introduction commit 091ab7a88ee626caa536c641fa3cee53a6e008df (2026-09-24T20:34:41Z), and inspected Genesis commit parent tree 3b807a527789d3341b13b71bf9579f0c8c68bd15, which has no allowed_signers path. Genesis commit 89de18afc41e79afc0259116df861928dfae8cba is timestamped 20:08:08Z; P-008 commit bf83556139422f341d6b75f48b6b9a2412ef941a is timestamped 20:18:45Z.",
+    "environment": "Read-only GitHub source repository inspection, 2026-10-20."
+  },
+  "scope_coverage": {
+    "included": [
+      "Reachable commit history of allowed_signers in vaidt/aura-specification",
+      "Tree of the Genesis commit parent",
+      "Observed commit timestamps for Genesis, P-008 and allowed_signers"
+    ],
+    "excluded": [
+      "Trust anchors published outside this repository",
+      "Whether the key holder had antecedent authority from another source",
+      "Exact wall-clock time when the private key produced each signature"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:35:00Z",
+  "reviewer": "AURA BETA source-pinned repository inventory",
+  "limitations": [
+    "Repository chronology does not establish the exact time a private key created a signature.",
+    "Absence of allowed_signers in the inspected parent tree does not prove no independent trust anchor existed elsewhere.",
+    "A later allow-list can be used as the verifier's key input but does not itself demonstrate antecedent constitutional competence."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/aura-specification/commit/091ab7a88ee626caa536c641fa3cee53a6e008df",
+  "notes": "The key entry shares fingerprint SHA256:u9HaNYWZGQYvGET5ZaX2c/V56MzL0Xo7Ilg9M1pZRwU. This is a trust-anchor chronology observation, not a finding of signature invalidity."
+}

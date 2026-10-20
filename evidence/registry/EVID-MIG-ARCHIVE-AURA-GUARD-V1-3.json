@@ -1,0 +1,49 @@
+{
+  "evidence_id": "EVID-MIG-ARCHIVE-AURA-GUARD-V1-3",
+  "claim_id": "https://github.com/kamilkrasinski4-sys/aura-guard-v1.3 has root MIGRATION_NOTICE.md on main and GitHub repository metadata reports archived=true",
+  "source_uri": "https://api.github.com/repos/kamilkrasinski4-sys/aura-guard-v1.3",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "27fcd82988a81e60e4f1866f394cb7ca371aa131",
+    "repository": "kamilkrasinski4-sys/aura-guard-v1.3",
+    "path": "MIGRATION_NOTICE.md"
+  },
+  "content_digest": {
+    "algorithm": "git-blob-sha1",
+    "value": "ed4cd2882fba61bd9c7456415f4e73c92101f29d",
+    "scope": "root MIGRATION_NOTICE.md blob at main following migration notice commit"
+  },
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "Migration notice fetch + GitHub repository archived-flag read-back",
+    "version": "GitHub REST API / Composio GitHub connection · 2026-10-20",
+    "command_or_procedure": "Fetch root MIGRATION_NOTICE.md at main; verify it references vaidt/Projekt-Aura-BETA-; read repository metadata after archive action and check archived=true. Pre-notice baseline was 35082d7b4880dad780fb55a1a5f3ac0ef4322674.",
+    "environment": "GitHub API, owner-authorized account github_tanker-seem"
+  },
+  "scope_coverage": {
+    "included": [
+      "Migration notice present on default branch",
+      "Migration notice commit follows stated pre-notice baseline",
+      "GitHub repository metadata reports archived=true after archive action"
+    ],
+    "excluded": [
+      "Full repository source equivalence with BETA",
+      "Completeness of code/evidence migration",
+      "Protocol normative authority or conformance",
+      "External consumer dependency impact beyond this bounded review"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T16:08:00.873Z",
+  "reviewer": "AURA BETA consolidation workflow",
+  "limitations": [
+    "Archive operation preserves repository/history but makes it read-only; this record does not prove all content has been copied to BETA.",
+    "PASS refers only to existence of notice and archived=true metadata at observation time.",
+    "BETA operational consolidation is not a ratified protocol source-of-truth declaration."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/kamilkrasinski4-sys/aura-guard-v1.3/blob/main/MIGRATION_NOTICE.md",
+  "notes": "Pre-notice baseline: 35082d7b4880dad780fb55a1a5f3ac0ef4322674. Notice commit: 27fcd82988a81e60e4f1866f394cb7ca371aa131. Archive metadata was independently read back after the action and returned archived=true."
+}

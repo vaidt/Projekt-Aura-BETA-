@@ -1,0 +1,45 @@
+{
+  "evidence_id": "EVID-GOV-P008-SIG-008",
+  "claim_id": "OpenSSH verifies current P-008 exact bytes despite unresolved internal ratification-status conflict",
+  "source_uri": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/AURA_P008_RATIFICATION_RECORD_v1.0.md",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "991274eed57d5b3308b0607feeb4d01e6a485974",
+    "repository": "vaidt/aura-specification",
+    "path": "AURA_P008_RATIFICATION_RECORD_v1.0.md"
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "OpenSSH ssh-keygen -Y verify",
+    "version": "OpenSSH_9.6p1 Ubuntu-3ubuntu13.20; OpenSSL 3.0.13",
+    "command_or_procedure": "Source-pinned GitHub Actions run #39472439876 verified AURA_P008_RATIFICATION_RECORD_v1.0.md.sig over exact current record bytes with identity kontakt.vaidt@gmail.com and namespace aura-governance; exit 0. Current record and signature Git blob pins matched.",
+    "environment": "GitHub Actions run #39472439876; PR branch head 89fab12a9310dd72b243db2b3130d9d189d4b; checked-out merge ref 72883b1f607612be19fbcea4490f89125215c7e3; allowed_signers pinned at vaidt/aura-specification@091ab7a88ee626caa536c641fa3cee53a6e008df."
+  },
+  "scope_coverage": {
+    "included": [
+      "Current P-008 record exact bytes at source commit 991274eed57d5b3308b0607feeb4d01e6a485974",
+      "Attached signature blob 54059184b417e13183da97ef8db05d9b506cf8e6",
+      "allowed_signers blob fa4fa29ed870f350f38157e9a1e15fe9654a6f86"
+    ],
+    "excluded": [
+      "Whether the record was competently ratified",
+      "Reconciliation of Ratification_Status PENDING_EXECUTION with later Normative_Effect EFFECTIVE language",
+      "Whether the M1 closure record correctly cites P-008 as EXECUTED",
+      "Authority continuity or implementation authorization"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:10:41Z",
+  "reviewer": "AURA BETA CI source-pinned OpenSSH observation",
+  "limitations": [
+    "PASS establishes exact-byte signature validity under the tested repository-sourced key input only.",
+    "The document contains a material status conflict: initial metadata says Ratification_Status PENDING_EXECUTION, while a later section states Normative_Effect EFFECTIVE.",
+    "A valid signature does not resolve the internal status conflict or establish the issuer's competence and normative effect."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39472439876",
+  "notes": "Signature result PASS / exit 0. The source record's internal status conflict remains unresolved; do not report P-008 as ratified solely from this result."
+}

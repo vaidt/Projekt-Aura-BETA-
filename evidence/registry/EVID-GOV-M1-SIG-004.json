@@ -1,0 +1,43 @@
+{
+  "evidence_id": "EVID-GOV-M1-SIG-004",
+  "claim_id": "AURA_M1_CLOSURE_RECORD_v1.0.md historical exact bytes match attached SSHSIG",
+  "source_uri": "https://github.com/vaidt/aura-specification/blob/6028ceda886db062488b29578d573f5826968d32/AURA_M1_CLOSURE_RECORD_v1.0.md",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "6028ceda886db062488b29578d573f5826968d32",
+    "repository": "vaidt/aura-specification",
+    "path": "AURA_M1_CLOSURE_RECORD_v1.0.md"
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "PASS",
+  "verification_method": {
+    "name": "Local SSHSIG envelope + Ed25519 verification",
+    "version": "local-analysis-run-2026-10-20",
+    "command_or_procedure": "Verify exact historical Markdown bytes against attached SSH signature in namespace aura-governance with the public key entry from allowed_signers.",
+    "environment": "Local analysis runtime; independent OpenSSH ssh-keygen -Y verify reproduction remains pending."
+  },
+  "scope_coverage": {
+    "included": [
+      "Historical M1 Markdown exact bytes at commit 6028ceda886db062488b29578d573f5826968d32",
+      "Attached signature namespace and Ed25519 signature check"
+    ],
+    "excluded": [
+      "Constitutional authority of signer",
+      "Legal or constitutional validity of act",
+      "Current amended Markdown bytes"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T15:56:41.697Z",
+  "reviewer": "AURA BETA source-baseline analysis (2026-10-20)",
+  "limitations": [
+    "This records a local cryptographic verification result, not independent OpenSSH reproduction.",
+    "The allow-list is repository-bound and is not an external trust anchor for constitutional authority.",
+    "PASS applies only to the exact historical bytes and stated verification scope."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/blob/alpha/bootstrap-architecture/docs/assurance/SOURCE_BASELINE_2026-10-20.md",
+  "notes": "Historical signature-to-bytes check; does not by itself close M1 or establish authority continuity."
+}

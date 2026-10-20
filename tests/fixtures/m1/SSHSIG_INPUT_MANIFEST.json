@@ -1,0 +1,33 @@
+{
+  "record_id": "BETA-M1-SSHSIG-VERIFICATION-MANIFEST-2026-10-20",
+  "status": "NON_NORMATIVE_TEST_FIXTURES",
+  "source_repository": "vaidt/aura-specification",
+  "source_current_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+  "namespace": "aura-governance",
+  "identity": "kontakt.vaidt@gmail.com",
+  "historical": {
+    "source_commit": "6028ceda886db062488b29578d573f5826968d32",
+    "message_path": "tests/fixtures/m1/historical/AURA_M1_CLOSURE_RECORD_v1.0.md",
+    "message_blob_sha": "2a729379f8d306a1f371db26d0ec4577cf8701b6",
+    "signature_path": "tests/fixtures/m1/historical/AURA_M1_CLOSURE_RECORD_v1.0.md.sig",
+    "signature_blob_sha": "e36a2ff03e39e3614c298dfb42c90964f058d65e",
+    "allowed_signers_path": "tests/fixtures/m1/historical/allowed_signers",
+    "allowed_signers_blob_sha": "fa4fa29ed870f350f38157e9a1e15fe9654a6f86",
+    "expected_verification": "PASS"
+  },
+  "current": {
+    "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+    "message_path": "tests/fixtures/m1/current/AURA_M1_CLOSURE_RECORD_v1.0.md",
+    "message_blob_sha": "1dde9631b646ef58bb6bdbe49cb5684c67aa4a43",
+    "signature_path": "tests/fixtures/m1/current/AURA_M1_CLOSURE_RECORD_v1.0.md.sig",
+    "signature_blob_sha": "e36a2ff03e39e3614c298dfb42c90964f058d65e",
+    "allowed_signers_path": "tests/fixtures/m1/current/allowed_signers",
+    "allowed_signers_blob_sha": "fa4fa29ed870f350f38157e9a1e15fe9654a6f86",
+    "expected_verification": "FAIL"
+  },
+  "notes": [
+    "Historical and current fixture bytes were copied from the exact source commits and their Git blob SHAs match the upstream blobs.",
+    "The current content changed while the attached signature and allowed_signers blobs remained unchanged.",
+    "Expected FAIL is a test assertion for signature-to-exact-bytes only. It does not independently revoke the historical act or decide who has authority to re-ratify it."
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "record_id": "BETA-SCHEMA-SNAPSHOT-APS300-2026-10-20",
+  "status": "NON_NORMATIVE_SNAPSHOT",
+  "disclaimer": "APS-300 currently declares Version 1.0-DRAFT and Status DRAFT. These snapshots provide structural validation only and do not establish ratification, authority, or semantic closure.",
+  "source_repository": "vaidt/aura-specification",
+  "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+  "source_commit_url": "https://github.com/vaidt/aura-specification/commit/991274eed57d5b3308b0607feeb4d01e6a485974",
+  "aps300_document": {
+    "path": "aps/APS-300_EVIDENCE_MODEL.md",
+    "blob_sha": "ad762de0fee86ece0c1fc75471a8fd510c6f91b5",
+    "url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/aps/APS-300_EVIDENCE_MODEL.md"
+  },
+  "copied_schemas": [
+    {
+      "source_path": "fixtures/schemas/evidence-object.schema.json",
+      "source_blob_sha": "660ff4d5eb4d84fe53723fb7f3b8e3313dfc8317",
+      "destination_path": "schemas/aps300-draft/evidence-object.schema.json",
+      "source_url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/fixtures/schemas/evidence-object.schema.json"
+    },
+    {
+      "source_path": "fixtures/schemas/evidence-pack.schema.json",
+      "source_blob_sha": "56dd031bf6ef8f59367549ee6c57b803f0f009ea",
+      "destination_path": "schemas/aps300-draft/evidence-pack.schema.json",
+      "source_url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/fixtures/schemas/evidence-pack.schema.json"
+    },
+    {
+      "source_path": "fixtures/schemas/attestation.schema.json",
+      "source_blob_sha": "724833ff331c7138701bd1c60702bafc7f9f0bee",
+      "destination_path": "schemas/aps300-draft/attestation.schema.json",
+      "source_url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/fixtures/schemas/attestation.schema.json"
+    },
+    {
+      "source_path": "fixtures/schemas/evaluation-result.schema.json",
+      "source_blob_sha": "922b0bb343fbe090d8d409d1a9a80f5787993abd",
+      "destination_path": "schemas/aps300-draft/evaluation-result.schema.json",
+      "source_url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/fixtures/schemas/evaluation-result.schema.json"
+    },
+    {
+      "source_path": "fixtures/schemas/policy-reference.schema.json",
+      "source_blob_sha": "f808d6ccbc72152dc88268fe6f0732f9ca2a307d",
+      "destination_path": "schemas/aps300-draft/policy-reference.schema.json",
+      "source_url": "https://github.com/vaidt/aura-specification/blob/991274eed57d5b3308b0607feeb4d01e6a485974/fixtures/schemas/policy-reference.schema.json"
+    }
+  ],
+  "note": "Schema $id values are preserved from the upstream snapshot and currently reference the AuraIDToken/aura-specification namespace. This source-identity inconsistency is preserved and documented, not silently normalized."
+}

@@ -1,0 +1,11 @@
+{
+  "name": "aura-beta-schema-validator",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pinned development-only JSON Schema validation tools for AURA BETA evidence gates.",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "ajv-cli": "5.0.0",
+    "ajv-formats": "3.0.1"
+  }
+}

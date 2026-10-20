@@ -1,0 +1,47 @@
+{
+  "evidence_id": "EVID-GOV-ARTICLE-XIII-PROCEDURE-010",
+  "claim_id": "The inspected reachable source tree does not identify an Article XIII-specific RFC, ARR, impact-analysis package, or amendment approval",
+  "source_uri": "https://github.com/vaidt/aura-specification/tree/991274eed57d5b3308b0607feeb4d01e6a485974",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "991274eed57d5b3308b0607feeb4d01e6a485974",
+    "repository": "vaidt/aura-specification",
+    "path": null
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "INCONCLUSIVE",
+  "verification_method": {
+    "name": "Reachable source tree and named governance artifact inventory",
+    "version": "GitHub REST API read; tree SHA 991274eed57d5b3308b0607feeb4d01e6a485974",
+    "command_or_procedure": "Enumerated the complete non-truncated 332-entry reachable Git tree; inspected rfcs/README.md, RFC-001_APS001_MILESTONE1_EXECUTION_SCOPE.md, AURA_ARTICLE_XIII_AUTHORSHIP_AND_INTENT_RECORD_v0.1.md, the Article XIII insertion commit, and associated PR data. RFC index lists only RFC-001 (DRAFT, APS-001 M1 execution scope); no Article XIII-specific RFC/ARR/approval was identified in the inspected corpus.",
+    "environment": "Read-only GitHub source repository inspection, 2026-10-20."
+  },
+  "scope_coverage": {
+    "included": [
+      "All paths in the reachable tree at main commit 991274eed57d5b3308b0607feeb4d01e6a485974",
+      "RFC index and indexed RFC",
+      "Article XIII authorship/intent record",
+      "Article XIII insertion commit metadata and diff",
+      "Associated Aura-IDToken PR #47 review and issue-comment collections"
+    ],
+    "excluded": [
+      "Private/external records, other repositories, or unindexed documents outside the inspected tree",
+      "Final determination under external law",
+      "Approval events not recorded in the inspected sources"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T18:35:00Z",
+  "reviewer": "AURA BETA source-pinned repository inventory",
+  "limitations": [
+    "INCONCLUSIVE is deliberate: no artifact was identified in this bounded source search, but that is not proof no such artifact exists elsewhere.",
+    "The Article XIII commit retains Version 1.0 / FROZEN status and does not include Article XI process artifacts.",
+    "The authorship/intent record is DRAFT and non-constitutive, not an authoritative adjudication.",
+    "Aura-IDToken PR #47 is a 133-file synchronization, not an Article XIII-specific amendment PR; its review and issue-comment collections were empty."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/aura-specification/commit/a53ef122f9cedbf110f30ed57ddd7ef1db6f1491",
+  "notes": "Repository insertion of Article XIII is established; procedural and normative effect remain NOT ESTABLISHED FROM SOURCES REVIEWED, not declared void."
+}

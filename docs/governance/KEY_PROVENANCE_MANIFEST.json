@@ -1,0 +1,85 @@
+{
+  "manifest_id": "AURA-KEY-PROVENANCE-MANIFEST-001",
+  "status": "NON_NORMATIVE",
+  "source_repository": "https://github.com/vaidt/aura-specification",
+  "source_commits": {
+    "genesis": "89de18afc41e79afc0259116df861928dfae8cba",
+    "related_records": "991274eed57d5b3308b0607feeb4d01e6a485974"
+  },
+  "digest_definitions": {
+    "sha256": "SHA-256 of the raw file bytes returned by git show",
+    "git_blob_sha1": "Git object ID resolved by git rev-parse COMMIT:PATH"
+  },
+  "artifacts": [
+    {
+      "artifact_id": "GENESIS_DECLARATION",
+      "source_commit": "89de18afc41e79afc0259116df861928dfae8cba",
+      "source_path": "GENESIS_DECLARATION.txt",
+      "byte_length": 992,
+      "sha256": "6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6",
+      "git_blob_sha1": "9c19e97270a4539ea7788a0553db2a800a573c44"
+    },
+    {
+      "artifact_id": "GENESIS_SIGNATURE",
+      "source_commit": "89de18afc41e79afc0259116df861928dfae8cba",
+      "source_path": "GENESIS_DECLARATION.txt.sig",
+      "byte_length": 306,
+      "sha256": "154f34a66e57cf5a9af1e83a6747fd925cf3f5b2a8e0bc7291eebf2e4b3acb15",
+      "git_blob_sha1": "82f114a695c5b30094500452c8770cb4d6d572f5"
+    },
+    {
+      "artifact_id": "AUTHORITY_BINDING_RECORD",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AUTHORITY_BINDING_RECORD_v1.1.md",
+      "byte_length": 985,
+      "sha256": "9544bee7bb3a042cac5041deb73706832c04c5d0e83f5c01252c71e839e678f0",
+      "git_blob_sha1": "f9dbbcc138a2e0d1bdb34aea2a238394a28ed2cd"
+    },
+    {
+      "artifact_id": "AUTHORITY_BINDING_SIGNATURE",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AUTHORITY_BINDING_RECORD_v1.1.md.sig",
+      "byte_length": 310,
+      "sha256": "2c7968dbdfe3153a24f0aeb2316e922f3c8e8bf4d106c8710863b1fcd8598c67",
+      "git_blob_sha1": "eed7842fc54f5bfeaaafecca63f5dfbe24823b79"
+    },
+    {
+      "artifact_id": "P008_RATIFICATION_RECORD",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AURA_P008_RATIFICATION_RECORD_v1.0.md",
+      "byte_length": 3190,
+      "sha256": "02279871b53ed7855aaa7591bd51cb735bfa6e2331352bd49e6f942ffc2eed71",
+      "git_blob_sha1": "077a9b8a16dfdb7b700d7d1ec3e19f9c476c4f1e"
+    },
+    {
+      "artifact_id": "P008_SIGNATURE",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AURA_P008_RATIFICATION_RECORD_v1.0.md.sig",
+      "byte_length": 310,
+      "sha256": "473f57323607f9e0b39be4198ea7069b8544e9faf0f4a2bce7b9ae4ae57d07ce",
+      "git_blob_sha1": "54059184b417e13183da97ef8db05d9b506cf8e6"
+    },
+    {
+      "artifact_id": "M1_CLOSURE_RECORD",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AURA_M1_CLOSURE_RECORD_v1.0.md",
+      "byte_length": 2182,
+      "sha256": "e6ec8697655863c17382c9c25574216b1046eeb0a788139fccdb6d5e312df429",
+      "git_blob_sha1": "1dde9631b646ef58bb6bdbe49cb5684c67aa4a43"
+    },
+    {
+      "artifact_id": "M1_CLOSURE_SIGNATURE",
+      "source_commit": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_path": "AURA_M1_CLOSURE_RECORD_v1.0.md.sig",
+      "byte_length": 310,
+      "sha256": "fbe4bd1f514d3eaf20635037b570fe9695ed7f339fd054761da7fd45e6157071",
+      "git_blob_sha1": "e36a2ff03e39e3614c298dfb42c90964f058d65e"
+    }
+  ],
+  "limitations": [
+    "This is a byte and Git-object inventory, not a trust-anchor determination.",
+    "Signature files are hashed but their SSH signatures are not verified by this script.",
+    "Signer identity, authority continuity, constitutional validity and ratification are not established.",
+    "The inventory is limited to the eight explicitly pinned artifacts and commits."
+  ]
+}
