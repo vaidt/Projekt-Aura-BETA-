@@ -9,7 +9,7 @@
 
 The candidate repository set is not a single interchangeable codebase. It includes competing canonical-source declarations, different branches/commit histories, distinct product and conformance roles, and CI results with different scopes. The inspected evidence is sufficient to require a source/authority conflict register; it is not sufficient to choose a normative winner or make a protocol-conformance claim.
 
-Independent OpenSSH verification in [GitHub Actions run #39456930057](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057) reproduced the signature-to-bytes mismatch: historical M1 exact bytes PASS (exit 0), current amended bytes FAIL (exit 255, `incorrect signature`), using OpenSSH_9.6p1 / OpenSSL 3.0.13. The run verified the six manifest-bound input blob SHAs and confirmed that historical/current signature and `allowed_signers` bytes are identical while the Markdown bytes differ. This establishes the mismatch for the current file; it does not itself revoke the historical act, decide legal/constitutional validity, or establish which authority may resolve the issue.
+Independent OpenSSH verification in [GitHub Actions run #39456930057](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057) reproduced the signature-to-bytes mismatch: historical M1 exact bytes PASS (exit 0), current amended bytes FAIL (exit 255, `incorrect signature`), using OpenSSH_9.6p1 / OpenSSL 3.0.13. The run verified the six manifest-bound input blob SHAs and confirmed that historical/current signature and `allowed_signers` bytes are identical while the Markdown bytes differ. A repeat run on a later PR tree, [#39468107358](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39468107358), reproduced the same result; its schema job passed and its strict M1 job failed as intended. This establishes the mismatch for the current file; it does not itself revoke the historical act, decide legal/constitutional validity, or establish which authority may resolve the issue.
 
 ## 2. Repository heads observed
 
@@ -88,7 +88,7 @@ These are conflicting claims with different asserted status and legal/constituti
 | Does the historical M1 Markdown validate against that signature? | YES — historical exact bytes returned PASS. |
 | Is M1 legally/constitutionally revoked or closed by this technical check? | NOT DETERMINED. A signature mismatch alone does not decide that question. |
 | Is DQ-006 closed? | Current closure package says OPEN. |
-| What was the result of BETA workflow run #39456930057? | Schema-validation job PASS; strict M1 signature gate FAIL; aggregate workflow FAIL, as intended. Run checked out PR merge commit `4f98747b9e4bc7097e5fd8249f15a351edd06ac9`; it does not validate the later PR head `4a59c5352a2ce1bd768980d4ef530989a11048c6`. |
+| What was the result of the later BETA workflow run #39468107358? | Schema-validation job PASS; strict M1 signature gate FAIL; aggregate workflow FAIL, as intended. It checked out merge commit `4defe826c4940a150bff0f79afbcc736ce2430b4`, integrating PR branch head `5655fdf88dc07cf2525989370246dab76b3a6129` at that time. Later commits require their own run inspection. |
 | Can BETA make protocol decisions effective? | NO. It is a non-canonical design/integration workspace. |
 
 ## 7. Recommended next actions
