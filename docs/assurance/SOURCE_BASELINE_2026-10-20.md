@@ -40,7 +40,7 @@ Only the named workflow run and its configured scope are established by a passin
 | `vaidt/Aura-Conformance-Kit` | [Aura TCK CI #35530103237](https://github.com/vaidt/Aura-Conformance-Kit/actions/runs/35530103237) | SUCCESS, 2026-09-20 | Older run; current rerun on 2026-10-20 not observed. CodeQL run on Oct 16 is not a TCK rerun. |
 | `Aura-IDToken/aura-poc-a-core-v3.3` | [Execution Checks #32667830035](https://github.com/Aura-IDToken/aura-poc-a-core-v3.3/actions/runs/32667830035) | FAILURE, 2026-08-23 | Historical run on current observed HEAD; detailed job logs still need review. |
 
-The BETA repository itself has no workflow run associated with the current PR head at this inspection point. Combined status checks returned no entries. This is recorded as `NOT_RUN / NO CHECKS OBSERVED`, not PASS.
+The BETA workflow run [#39456930057](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39456930057) ran against PR merge commit `4f98747b9e4bc7097e5fd8249f15a351edd06ac9`: schema-validation job PASS; strict M1 exact-byte signature gate FAIL as designed; overall workflow FAIL. This is not a green CI baseline.
 
 ## 4. Detached SSH signature check — M1 closure record
 
@@ -126,4 +126,4 @@ ssh-keygen -Y verify -f /tmp/aura-allowed-signers \
   -s /tmp/m1-current.sig < /tmp/m1-current.md
 ```
 
-For the independent run, record the OpenSSH version, both exit codes, stderr/stdout, and the exact checked-out commit IDs. If the expected outcomes differ, mark the finding `INCONCLUSIVE` and investigate; do not suppress or reinterpret the discrepancy. The signer allow-list comes from the same repository history and therefore provides a cryptographic verification key input, not an external trust anchor for constitutional authority.
+Recorded independent run: OpenSSH_9.6p1 Ubuntu-3ubuntu13.19 / OpenSSL 3.0.13; historical verification exit code 0; current verification exit code 255; BETA checked-out merge commit `4f98747b9e4bc7097e5fd8249f15a351edd06ac9`; source main pinned at `991274eed57d5b3308b0607feeb4d01e6a485974`. The expected outcomes were reproduced. If future outcomes differ, mark the finding `INCONCLUSIVE` and investigate; do not suppress or reinterpret the discrepancy. The signer allow-list comes from the same repository history and therefore provides a cryptographic verification key input, not an external trust anchor for constitutional authority.
