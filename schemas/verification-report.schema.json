@@ -13,6 +13,7 @@
     "created_at",
     "scope",
     "source_bindings",
+    "aps300_binding",
     "verifier",
     "execution",
     "byte_evidence",
@@ -921,6 +922,9 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "aps300_binding": {
+      "$ref": "#/$defs/aps300Binding"
     }
   },
   "$defs": {
@@ -1101,6 +1105,405 @@
           }
         }
       ]
+    },
+    "aps300Binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "reason_code",
+        "snapshot",
+        "evidence_object",
+        "evidence_pack"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "PRESENT",
+            "MISSING",
+            "BLOCKED",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "reason_code": {
+          "enum": [
+            "NONE",
+            "APS300_RECORDS_NOT_PRESENT",
+            "SCHEMA_VALIDATION_FAILED",
+            "SNAPSHOT_UNAVAILABLE",
+            "NOT_APPLICABLE",
+            "UNKNOWN"
+          ]
+        },
+        "snapshot": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "source_repository_uri",
+            "source_commit_sha",
+            "source_document_path",
+            "source_document_blob_sha1",
+            "snapshot_manifest_path",
+            "snapshot_manifest_blob_sha1",
+            "evidence_object_schema_blob_sha1",
+            "evidence_pack_schema_blob_sha1",
+            "source_schema_status",
+            "schema_id_namespace_status"
+          ],
+          "properties": {
+            "source_repository_uri": {
+              "type": "string",
+              "format": "uri"
+            },
+            "source_commit_sha": {
+              "type": "string",
+              "pattern": "^(?:[a-f0-9]{40}|[a-f0-9]{64})$"
+            },
+            "source_document_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "source_document_blob_sha1": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "snapshot_manifest_path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "snapshot_manifest_blob_sha1": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "evidence_object_schema_blob_sha1": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "evidence_pack_schema_blob_sha1": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "source_schema_status": {
+              "enum": [
+                "DRAFT",
+                "RATIFIED",
+                "UNKNOWN"
+              ]
+            },
+            "schema_id_namespace_status": {
+              "enum": [
+                "CONSISTENT",
+                "CONFLICTED",
+                "UNKNOWN"
+              ]
+            }
+          }
+        },
+        "evidence_object": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "artifact_id",
+            "sha256",
+            "git_blob_sha1",
+            "schema_validation_status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PRESENT",
+                "MISSING",
+                "BLOCKED",
+                "NOT_RUN"
+              ]
+            },
+            "artifact_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "git_blob_sha1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "schema_validation_status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "BLOCKED",
+                "NOT_RUN"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PRESENT"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "artifact_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "git_blob_sha1": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{40}$"
+                  },
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "MISSING"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "artifact_id": {
+                    "type": "null"
+                  },
+                  "sha256": {
+                    "type": "null"
+                  },
+                  "git_blob_sha1": {
+                    "type": "null"
+                  },
+                  "schema_validation_status": {
+                    "const": "NOT_RUN"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "evidence_pack": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "artifact_id",
+            "sha256",
+            "git_blob_sha1",
+            "schema_validation_status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "PRESENT",
+                "MISSING",
+                "BLOCKED",
+                "NOT_RUN"
+              ]
+            },
+            "artifact_id": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "sha256": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{64}$"
+            },
+            "git_blob_sha1": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^[a-f0-9]{40}$"
+            },
+            "schema_validation_status": {
+              "enum": [
+                "PASS",
+                "FAIL",
+                "BLOCKED",
+                "NOT_RUN"
+              ]
+            }
+          },
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "PRESENT"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "artifact_id": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{64}$"
+                  },
+                  "git_blob_sha1": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{40}$"
+                  },
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
+              }
+            },
+            {
+              "if": {
+                "properties": {
+                  "status": {
+                    "const": "MISSING"
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              },
+              "then": {
+                "properties": {
+                  "artifact_id": {
+                    "type": "null"
+                  },
+                  "sha256": {
+                    "type": "null"
+                  },
+                  "git_blob_sha1": {
+                    "type": "null"
+                  },
+                  "schema_validation_status": {
+                    "const": "NOT_RUN"
+                  }
+                }
+              }
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "PRESENT"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "const": "NONE"
+              },
+              "evidence_object": {
+                "properties": {
+                  "status": {
+                    "const": "PRESENT"
+                  },
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "evidence_pack": {
+                "properties": {
+                  "status": {
+                    "const": "PRESENT"
+                  },
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "BLOCKED"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "not": {
+                  "const": "NONE"
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NOT_APPLICABLE"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "reason_code": {
+                "const": "NOT_APPLICABLE"
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "allOf": [
@@ -1149,6 +1552,27 @@
             "properties": {
               "status": {
                 "const": "PASS"
+              }
+            }
+          },
+          "aps300_binding": {
+            "properties": {
+              "status": {
+                "const": "PRESENT"
+              },
+              "evidence_object": {
+                "properties": {
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
+              },
+              "evidence_pack": {
+                "properties": {
+                  "schema_validation_status": {
+                    "const": "PASS"
+                  }
+                }
               }
             }
           }
