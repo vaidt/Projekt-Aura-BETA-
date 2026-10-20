@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>AURA BETA — Evidence-first Control Plane</title>
+<style>
+:root{--bg:#0b0d12;--panel:#11151d;--panel2:#151b25;--line:#283241;--text:#e8edf5;--muted:#91a0b4;--cyan:#71d5d2;--gold:#e8c27a;--red:#ff8989;--blue:#92b7ff;--green:#a5ddb4;--shadow:0 14px 40px #0003}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 70% -20%,#223448 0,transparent 46%),var(--bg);color:var(--text);font:14px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.shell{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}.sidebar{border-right:1px solid var(--line);padding:26px 16px;background:#0b0e14dd;display:flex;flex-direction:column;gap:28px}.brand{display:flex;gap:12px;align-items:center;padding:0 8px}.logo{width:39px;height:39px;border:1px solid #3c7778;background:#143036;display:grid;place-items:center;border-radius:12px;color:var(--cyan);font-size:20px;font-weight:800}.brand b{display:block;letter-spacing:.19em;font-size:13px}.brand small{color:var(--muted);font-size:11px}.section-label{font-size:10px;letter-spacing:.16em;color:#687991;font-weight:800;padding:0 12px;text-transform:uppercase}.nav{display:grid;gap:5px}.nav button{border:1px solid transparent;text-align:left;color:#a8b4c6;background:transparent;padding:10px 12px;border-radius:9px;display:flex;gap:11px;align-items:center}.nav button:hover{background:#ffffff08;color:var(--text)}.nav button.active{background:#13272c;border-color:#285354;color:#c9fffc}.nav .glyph{width:18px;color:var(--cyan);text-align:center}.sidebar-note{margin-top:auto;padding:14px;border:1px solid var(--line);background:#10151c;border-radius:12px}.sidebar-note b{font-size:11px;letter-spacing:.1em}.sidebar-note p{font-size:11px;color:var(--muted);margin:8px 0 0}.main{padding:30px clamp(18px,3.5vw,54px) 60px;min-width:0;max-width:1550px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:34px}.crumb{color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:7px;padding:5px 9px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:800}.pill.warn{border-color:#65512d;color:var(--gold);background:#362b171f}.pill.demo{border-color:#316b70;color:var(--cyan);background:#12303566}.dot{width:6px;height:6px;border-radius:50%;background:currentColor}.export{border:1px solid #3c7778;background:#143036;color:#d7fffc;padding:9px 12px;border-radius:8px}.export:hover{background:#194147}.hero{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}.eyebrow{font-size:10px;letter-spacing:.18em;font-weight:800;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}.hero h1{font-size:clamp(28px,4vw,44px);letter-spacing:-.045em;line-height:1.07;margin:0;max-width:720px}.hero h1 span{color:#8d9db2}.hero p{color:var(--muted);max-width:720px;margin:14px 0 0}.build-id{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;color:#8795aa;text-align:right;white-space:nowrap}.notice{display:flex;gap:13px;align-items:flex-start;border:1px solid #6c5228;background:linear-gradient(90deg,#372a163b,#211b143b);padding:15px 17px;border-radius:12px;margin:25px 0 24px}.notice .mark{font-size:18px;color:var(--gold)}.notice b{display:block;font-size:12px;color:#ffdfa0;letter-spacing:.04em}.notice p{margin:4px 0 0;color:#b6b1a7;font-size:12px}.metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:28px}.metric,.card,.table-card,.panel{border:1px solid var(--line);background:linear-gradient(145deg,#141a23,#10141b);border-radius:13px;box-shadow:var(--shadow)}.metric{padding:17px 18px}.metric .label{color:var(--muted);font-size:11px}.metric .number{font-size:32px;font-weight:750;letter-spacing:-.05em;margin:7px 0 5px}.metric .foot{font-size:10px;color:#7f8da0}.metric .accent{color:var(--cyan)}.metric .warnnum{color:var(--gold)}.page-title{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:15px}.page-title h2{font-size:19px;letter-spacing:-.025em;margin:0}.page-title p{margin:4px 0 0;color:var(--muted);font-size:12px}.grid2{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.8fr);gap:14px;margin-bottom:26px}.card{padding:20px}.card h3{font-size:14px;margin:0 0 5px}.sub{color:var(--muted);font-size:11px;margin:0 0 17px}.status-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 0;border-bottom:1px solid #222b37}.status-row:last-child{border-bottom:0;padding-bottom:0}.status-row:first-of-type{padding-top:4px}.status-row b{display:block;font-size:12px}.status-row small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.badge{font-size:9px;letter-spacing:.075em;font-weight:850;padding:5px 8px;border-radius:6px;border:1px solid;white-space:nowrap}.badge.blocked{color:var(--red);border-color:#78434a;background:#4b1d2635}.badge.proposed{color:var(--gold);border-color:#69542d;background:#4b3a1f30}.badge.stale{color:#c2ccdc;border-color:#485464;background:#28313e55}.badge.good{color:var(--green);border-color:#3e704e;background:#1f412b55}.badge.neutral{color:#a4bbdb;border-color:#405a7b;background:#1a2b4255}.list{display:grid;gap:10px}.list-item{display:flex;gap:12px;align-items:flex-start;border:1px solid #26303d;background:#0d1219;padding:12px;border-radius:9px}.list-item .index{font:11px ui-monospace,monospace;color:var(--cyan);padding-top:2px}.list-item b{font-size:12px;display:block}.list-item p{font-size:11px;color:var(--muted);margin:4px 0 0}.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0 28px}.act{padding:18px;min-height:157px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(155deg,#17212c,#10151c)}.act .num{font:12px ui-monospace,monospace;color:var(--cyan);margin-bottom:20px}.act h3{margin:0;font-size:14px}.act p{margin:7px 0 0;font-size:11px;color:var(--muted)}.act .act-status{margin-top:13px;font-size:9px;font-weight:800;letter-spacing:.08em;color:var(--gold)}.table-card{overflow:hidden;margin-bottom:23px}.table-head{padding:17px 18px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line)}.table-head h3{margin:0;font-size:13px}.tools{display:flex;gap:8px;flex-wrap:wrap}.search,.select{color:var(--text);background:#0b1017;border:1px solid var(--line);border-radius:7px;padding:8px 10px;font-size:11px}.search{min-width:210px}.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:680px}th{text-align:left;padding:10px 15px;color:#74849a;background:#0d1219;text-transform:uppercase;letter-spacing:.1em;font-size:9px;font-weight:800}td{padding:13px 15px;border-top:1px solid #202a37;vertical-align:top;font-size:11px;color:#c4cfdd}td b{font-size:11px;color:var(--text);display:block}td small{display:block;color:var(--muted);font-size:10px;line-height:1.45;margin-top:4px}.tag{color:#a9b8cc;font:10px ui-monospace,monospace}.empty{text-align:center;color:var(--muted);padding:28px}.hidden{display:none!important}.page{display:none}.page.active{display:block}.timeline{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}.phase{border:1px solid var(--line);border-radius:11px;background:#10151d;padding:15px}.phase .step{font:10px ui-monospace,monospace;color:var(--cyan)}.phase h4{font-size:12px;margin:9px 0 4px}.phase p{font-size:11px;color:var(--muted);margin:0}.phase .gate{margin-top:12px;color:var(--gold);font-size:9px;font-weight:800;letter-spacing:.07em}.footnote{color:#748399;font-size:10px;line-height:1.6;border-top:1px solid var(--line);padding-top:18px;margin-top:34px}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.kv{display:grid;grid-template-columns:125px minmax(0,1fr);gap:8px 13px;font-size:11px}.kv span:nth-child(odd){color:var(--muted)}.kv span:nth-child(even){overflow-wrap:anywhere}.notice-inline{font-size:11px;border-left:2px solid var(--gold);padding:2px 0 2px 11px;color:#b7b2a8;margin-top:14px}
+@media(max-width:1050px){.shell{grid-template-columns:210px minmax(0,1fr)}.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.grid2{grid-template-columns:1fr}.timeline{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.shell{display:block}.sidebar{position:static;border-right:0;border-bottom:1px solid var(--line);padding:13px;gap:14px}.brand{padding:0 5px}.section-label,.sidebar-note{display:none}.nav{display:flex;overflow:auto}.nav button{white-space:nowrap;padding:8px 10px;font-size:11px}.nav .glyph{display:none}.main{padding:21px 14px 40px}.topbar{margin-bottom:23px}.hero{display:block}.build-id{text-align:left;margin-top:14px}.metrics{gap:8px}.metric{padding:12px}.metric .number{font-size:26px}.acts{grid-template-columns:1fr}.act{min-height:auto}.timeline{grid-template-columns:1fr}.search{min-width:150px;width:100%}.kv{grid-template-columns:1fr;gap:5px}.kv span:nth-child(even){margin-bottom:8px}}
+</style>
+</head>
+<body>
+<div class="shell">
+<aside class="sidebar">
+  <div class="brand"><div class="logo">A</div><div><b>AURA <span style="color:var(--cyan)">BETA</span></b><small>Evidence-first workspace</small></div></div>
+  <div>
+    <div class="section-label">Control plane</div>
+    <nav class="nav" aria-label="Główna nawigacja">
+      <button class="active" data-page="overview"><span class="glyph">◈</span> Przegląd</button>
+      <button data-page="evidence"><span class="glyph">⌁</span> Rejestr dowodów</button>
+      <button data-page="gates"><span class="glyph">⊙</span> Bramki governance</button>
+      <button data-page="roadmap"><span class="glyph">↗</span> Plan i następne kroki</button>
+    </nav>
+  </div>
+  <div class="sidebar-note"><b>TRYB OPERACYJNY</b><p>Projektowanie i inwentaryzacja. Brak połączenia live z GitHub Actions, kolektorami i źródłami AURA.</p></div>
+</aside>
+<main class="main">
+  <header class="topbar">
+    <div class="crumb">AURA / BETA / <span id="crumbCurrent">OVERVIEW</span></div>
+    <div class="top-actions"><span class="pill demo"><span class="dot"></span> Static prototype</span><button class="export" id="exportBtn">Eksportuj snapshot JSON ↗</button></div>
+  </header>
+
+  <section class="hero">
+    <div><div class="eyebrow">Engineering · Assurance · Governance</div><h1>Nie etykiety.<br><span>Łańcuch dowodowy.</span></h1><p>Panel kontrolny AURA zaprojektowany wokół źródła, rewizji, metody weryfikacji i rzeczywistego zakresu. Każdy status ma wskazywać, co wiemy — oraz czego nie sprawdziliśmy.</p></div>
+    <div class="build-id">PANEL / v0.1-draft<br>BUILD: UI-ONLY<br>DATA: INHERITED SAMPLE</div>
+  </section>
+
+  <div class="notice"><div class="mark">⚠</div><div><b>TRYB DEMO — BRAK WERYFIKACJI LIVE</b><p>Widoczne pozycje to odziedziczone ustalenia i przykładowe rekordy do przeglądu. Nie wykonano tu odczytu bieżących branchy, commitów ani workflow źródeł AURA. Ten panel nie dowodzi zgodności, ratyfikacji ani aktualności danych.</p></div></div>
+
+  <section id="page-overview" class="page active">
+    <div class="metrics">
+      <div class="metric"><div class="label">Źródła sprawdzone live</div><div class="number accent">0</div><div class="foot">Kolektory jeszcze nie istnieją</div></div>
+      <div class="metric"><div class="label">Uruchomione kontrole</div><div class="number">0</div><div class="foot">Brak wyników verifiera w tym repo</div></div>
+      <div class="metric"><div class="label">Odziedziczone blokery</div><div class="number warnnum">3</div><div class="foot">Wymagają ponownej weryfikacji</div></div>
+      <div class="metric"><div class="label">Rekordy live w rejestrze</div><div class="number">0</div><div class="foot">Schema jest propozycją, nie bazą danych</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <h3>Stan odziedziczony — wymaga potwierdzenia</h3><p class="sub">Nie jest wynikiem automatycznego audytu wykonanego dziś.</p>
+        <div class="status-row"><div><b>M1 · Ciągłość uprawnień</b><small>Źródło: wcześniejsze materiały governance; aktualność niepotwierdzona.</small></div><span class="badge blocked">NOT PROVEN</span></div>
+        <div class="status-row"><div><b>P-008 · Ratification gate</b><small>Poprzedni zapis wskazuje PROPOSED; w tym panelu nie zatwierdzono zmiany normatywnej.</small></div><span class="badge proposed">PROPOSED / BLOCKED</span></div>
+        <div class="status-row"><div><b>Specyfikacja · kompletność</b><small>Macierz z 2026-08-18 wskazywała FROZEN-BLOCKED; wymaga odczytu aktualnego HEAD.</small></div><span class="badge stale">HISTORICAL</span></div>
+        <div class="notice-inline">Interpretacja: stan odziedziczony jest punktem startowym inwentaryzacji, a nie certyfikatem aktualnego stanu repozytoriów.</div>
+      </div>
+      <div class="card">
+        <h3>Decyzje architektoniczne alfa</h3><p class="sub">Przyjęte dla tego workspace; bez efektu normatywnego dla AURA.</p>
+        <div class="list">
+          <div class="list-item"><div class="index">D-01</div><div><b>Dowód przed statusem</b><p>Każdy istotny badge musi prowadzić do identyfikowalnego dowodu i metody weryfikacji.</p></div></div>
+          <div class="list-item"><div class="index">D-02</div><div><b>Conformance Core niezależny od implementacji</b><p>Testowany kod nie może być jedynym źródłem oczekiwanego wyniku.</p></div></div>
+          <div class="list-item"><div class="index">D-03</div><div><b>BETA nie zastępuje kanonu</b><p>Nowe repo jest środowiskiem integracji, dopóki governance nie udowodni innego statusu.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-title"><div><h2>Trzy akty kontroli</h2><p>Oś narracyjna panelu inspirowana wcześniejszą makietą AURA.</p></div><span class="pill">PROPOSED INFORMATION ARCHITECTURE</span></div>
+    <div class="acts">
+      <div class="act"><div class="num">01 / GENEZA</div><h3>Skąd pochodzi twierdzenie?</h3><p>Repozytorium, ścieżka, rewizja, rola źródła i historia pochodzenia.</p><div class="act-status">NEXT: SOURCE INVENTORY</div></div>
+      <div class="act"><div class="num">02 / DOWÓD</div><h3>Co zostało rzeczywiście sprawdzone?</h3><p>Metoda, wejścia, digest, wynik, zakres i ograniczenia weryfikacji.</p><div class="act-status">NEXT: EVIDENCE CONTRACT</div></div>
+      <div class="act"><div class="num">03 / STAN</div><h3>Co wolno z tego wywnioskować?</h3><p>Osobne bramki dowodowe, testowe i governance bez automatycznych skrótów.</p><div class="act-status">NEXT: TRACEABILITY</div></div>
+    </div>
+
+    <div class="page-title"><div><h2>Kolejka prac</h2><p>Priorytety ustalone dla pierwszej iteracji projektowej.</p></div></div>
+    <div class="table-card"><div class="table-wrap"><table><thead><tr><th>Priorytet</th><th>Praca</th><th>Warunek domknięcia</th><th>Stan</th></tr></thead><tbody>
+      <tr><td><span class="tag">P0</span></td><td><b>Inwentaryzacja źródeł</b><small>Branch, HEAD, pliki, digest, rola.</small></td><td>Każde źródło wiąże się z rewizją albo ma jawny brak.</td><td><span class="badge proposed">PENDING</span></td></tr>
+      <tr><td><span class="tag">P0</span></td><td><b>Macierz kanonu i konfliktów</b><small>Authority / currentness / normative effect.</small></td><td>Konflikty widoczne; brak rozstrzygnięć przez domysł.</td><td><span class="badge proposed">PENDING</span></td></tr>
+      <tr><td><span class="tag">P1</span></td><td><b>Protocol → Implementation map</b><small>Requirement → invariant → vector → code → evidence.</small></td><td>Każdy in-scope wymóg ma jawny łańcuch śledzenia.</td><td><span class="badge neutral">NOT STARTED</span></td></tr>
+      <tr><td><span class="tag">P1</span></td><td><b>Minimal Conformance Core</b><small>Deterministic runner + negative cases.</small></td><td>Wynik wiąże verifier version, fixture digest i source revision.</td><td><span class="badge neutral">NOT STARTED</span></td></tr>
+    </tbody></table></div></div>
+  </section>
+
+  <section id="page-evidence" class="page">
+    <div class="page-title"><div><h2>Rejestr dowodów</h2><p>Pozycje demonstracyjne — żadna nie jest automatycznie odświeżana z repozytoriów.</p></div><span class="pill warn">INHERITED SAMPLE</span></div>
+    <div class="table-card">
+      <div class="table-head"><h3>Evidence ledger</h3><div class="tools"><input class="search" id="evidenceSearch" placeholder="Szukaj po ID, claim lub źródle…" aria-label="Szukaj dowodów"><select class="select" id="evidenceFilter" aria-label="Filtr dostępności"><option value="ALL">Wszystkie statusy</option><option value="STALE">HISTORICAL / STALE</option><option value="INACCESSIBLE">INACCESSIBLE</option><option value="MISSING">MISSING</option></select></div></div>
+      <div class="table-wrap"><table><thead><tr><th>ID / Claim</th><th>Źródło i zakres</th><th>Dostępność</th><th>Wynik</th><th>Ograniczenie</th></tr></thead><tbody id="evidenceRows"></tbody></table></div>
+    </div>
+    <div class="card"><h3>Jak czytać ten rejestr</h3><p class="sub">Zgodnie z projektem modelu dowodowego.</p><div class="kv"><span>PRESENT</span><span>Artefakt pobrano; nie znaczy to, że jest poprawny lub autorytatywny.</span><span>PASS</span><span>Przeszedł tylko określony check dla określonej rewizji i zakresu.</span><span>STALE</span><span>Treść jest historyczna lub nie została ponownie związana z aktualnym HEAD.</span><span>NOT_RUN</span><span>Nie wykazano wykonania kontroli.</span></div></div>
+  </section>
+
+  <section id="page-gates" class="page">
+    <div class="page-title"><div><h2>Bramki governance</h2><p>Stan historyczny przedstawiony tylko jako lista do ponownej weryfikacji.</p></div><span class="pill warn">NO RATIFICATION IMPLIED</span></div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Przejścia krytyczne</h3><p class="sub">Bramka nie może przejść dalej bez konkretnego dowodu wejściowego.</p>
+        <div class="status-row"><div><b>G0 · Authority continuity</b><small>Warunek: source → competent issuer → current holder → scope → effective date → validity.</small></div><span class="badge blocked">BLOCKED</span></div>
+        <div class="status-row"><div><b>G1 · Decision ratification</b><small>Warunek: dowód kompetencji i ratyfikacji dla konkretnej decyzji.</small></div><span class="badge blocked">BLOCKED</span></div>
+        <div class="status-row"><div><b>G2 · Implementation authorization</b><small>Warunek: właściwie ratyfikowany kontrakt i jawna autoryzacja migracji.</small></div><span class="badge blocked">NOT GRANTED</span></div>
+        <div class="status-row"><div><b>G3 · Independent conformance</b><small>Warunek: kontrakt, golden vectors, niezależny oracle i kontrolowane uruchomienie.</small></div><span class="badge neutral">NOT ESTABLISHED</span></div>
+      </div>
+      <div class="card"><h3>Warunek alfa</h3><p class="sub">Co zmienia status bramki?</p>
+        <div class="list"><div class="list-item"><div class="index">01</div><div><b>Nowy dowód źródłowy</b><p>Wersjonowany artefakt, którego zawartość i pochodzenie zostały odczytane.</p></div></div><div class="list-item"><div class="index">02</div><div><b>Weryfikacja kompetencji</b><p>Dowód kompetentnego wystawcy i aktualnego zakresu uprawnień.</p></div></div><div class="list-item"><div class="index">03</div><div><b>Jawne przejście stanu</b><p>Poprzedni stan, nowy stan, procedura, wynik i reviewer są zapisane.</p></div></div></div>
+      </div>
+    </div>
+    <div class="notice"><div class="mark">!</div><div><b>Nie skracamy łańcucha</b><p>Nie traktujemy deklaracji roli w dokumencie, nazwy konta GitHub lub dostępu do zapisu jako wystarczającego dowodu władzy konstytucyjnej. Ten demonstrator sam nie rozstrzyga takiej kompetencji.</p></div></div>
+  </section>
+
+  <section id="page-roadmap" class="page">
+    <div class="page-title"><div><h2>Plan i następne kroki</h2><p>Najpierw kontrola i kontrakt; dopiero potem implementacja.</p></div><span class="pill demo">WP-0 ACTIVE IN PLAN ONLY</span></div>
+    <div class="timeline">
+      <div class="phase"><div class="step">WP-0 / BASELINE</div><h4>Granice repo i controls</h4><p>Role repozytorium, status semantics, evidence model i PR discipline.</p><div class="gate">IN REVIEW</div></div>
+      <div class="phase"><div class="step">WP-1 / INVENTORY</div><h4>Źródła i authority map</h4><p>Current branch, HEAD, immutable source links, konflikty i ograniczenia.</p><div class="gate">NEXT · P0</div></div>
+      <div class="phase"><div class="step">WP-2 / BINDING</div><h4>Requirement mapping</h4><p>Norma → invariant → vector → implementation → evidence.</p><div class="gate">BLOCKED BY WP-1</div></div>
+      <div class="phase"><div class="step">WP-3 / CORE</div><h4>Minimal Conformance Core</h4><p>Niezależny runner, fixture controls, negative testy i raport wynikowy.</p><div class="gate">BLOCKED BY CONTRACT</div></div>
+      <div class="phase"><div class="step">WP-4 / COLLECTOR</div><h4>Evidence acquisition</h4><p>Read-only kolektory i wiązanie wyników do commitów oraz digestów.</p><div class="gate">AFTER WP-2/3 DESIGN</div></div>
+      <div class="phase"><div class="step">WP-5 / PANEL</div><h4>Live control plane</h4><p>Źródłowe ścieżki dowodowe, filtry, gap register i eksport.</p><div class="gate">NO LIVE CLAIM YET</div></div>
+      <div class="phase"><div class="step">WP-6 / RELEASE</div><h4>Hardening i operacje</h4><p>Threat model, reproducibility, release manifest i rollback.</p><div class="gate">LATER</div></div>
+    </div>
+    <div class="card" style="margin-top:18px"><h3>Decyzja lidera alfa</h3><p class="sub">Następny najlepszy krok o najwyższej wartości dowodowej.</p><p style="font-size:12px;max-width:800px">Wykonać read-only source inventory dla obecnych repozytoriów i ustalić, które twierdzenia są aktualne na konkretnym HEAD. Bez tego nie wybieramy jeszcze jednego kanonicznego źródła, nie zamrażamy golden vectors i nie deklarujemy zgodności.</p></div>
+  </section>
+
+  <footer class="footnote">AURA BETA / UI PROTOTYPE 0.1-DRAFT. Dane historyczne i rekordy demonstracyjne są oznaczone jako takie. Brak konektorów live, brak wykonania Conformance Core, brak ratyfikacji i brak deklaracji zgodności. Eksport snapshotu zawiera dokładnie ten stan demonstracyjny.</footer>
+</main>
+</div>
+<script>
+const evidence = [
+ {id:"EVID-GOV-M1-001",claim:"M1 / authority continuity",source:"Wcześniejszy zapis M1 governance",revision:"Historical snapshot · exact source revision not yet bound",availability:"STALE",result:"INCONCLUSIVE",limit:"Wymaga ponownej kontroli źródła konstytutywnego, kompetencji i aktualnej ważności."},
+ {id:"EVID-GOV-P008-002",claim:"P-008 ratification state",source:"Wcześniejsza dyspozycja governance",revision:"Historical snapshot · exact source revision not yet bound",availability:"STALE",result:"NOT_RUN",limit:"W tym repo nie wykonano weryfikacji ratyfikacji ani kompetencji."},
+ {id:"EVID-SPEC-MATRIX-003",claim:"Specification completion",source:"SPECIFICATION_COMPLETION_MATRIX, audit date 2026-08-18",revision:"Supplied snapshot · live HEAD not checked",availability:"STALE",result:"NOT_RUN",limit:"Raport historyczny nie przesądza o stanie repo w dniu 2026-10-20."},
+ {id:"EVID-REPO-BETA-004",claim:"BETA repository bootstrap",source:"GitHub integration result for vaidt/Projekt-Aura-BETA-",revision:"Empty repository at discovery; bootstrap README commit recorded",availability:"PRESENT",result:"PASS",limit:"Potwierdza tylko fakt inicjalizacji workspace; nie potwierdza protokołu ani zgodności."}
+];
+const gates = [
+ {id:"G0",name:"Authority continuity",status:"BLOCKED"},
+ {id:"G1",name:"Decision ratification",status:"BLOCKED"},
+ {id:"G2",name:"Implementation authorization",status:"NOT GRANTED"},
+ {id:"G3",name:"Independent conformance",status:"NOT ESTABLISHED"}
+];
+const statusClass = s => ({PASS:"good",FAIL:"blocked",INCONCLUSIVE:"proposed",NOT_RUN:"stale",BLOCKED:"blocked", "NOT GRANTED":"blocked","NOT ESTABLISHED":"neutral"})[s]||"neutral";
+const badge = s => '<span class="badge '+statusClass(s)+'">'+s+'</span>';
+function drawEvidence(){
+ const q=(document.getElementById("evidenceSearch")?.value||"").toLowerCase();
+ const f=document.getElementById("evidenceFilter")?.value||"ALL";
+ const rows=evidence.filter(e=>(f==="ALL"||e.availability===f)&&[e.id,e.claim,e.source,e.revision,e.limit].join(" ").toLowerCase().includes(q));
+ const el=document.getElementById("evidenceRows"); if(!el)return;
+ el.innerHTML=rows.length?rows.map(e=>'<tr><td><b class="mono">'+e.id+'</b><small>'+e.claim+'</small></td><td><b>'+e.source+'</b><small>'+e.revision+'</small></td><td>'+badge(e.availability)+'</td><td>'+badge(e.result)+'</td><td>'+e.limit+'</td></tr>').join(""):'<tr><td colspan="5" class="empty">Brak pozycji pasujących do filtra.</td></tr>';
+}
+const names={overview:"OVERVIEW",evidence:"EVIDENCE LEDGER",gates:"GOVERNANCE GATES",roadmap:"ROADMAP"};
+function navigate(name){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ const pg=document.getElementById("page-"+name); if(pg)pg.classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+ document.getElementById("crumbCurrent").textContent=names[name]||"OVERVIEW";
+}
+document.querySelectorAll(".nav button").forEach(b=>b.addEventListener("click",()=>navigate(b.dataset.page)));
+document.getElementById("evidenceSearch").addEventListener("input",drawEvidence);
+document.getElementById("evidenceFilter").addEventListener("change",drawEvidence);
+document.getElementById("exportBtn").addEventListener("click",()=>{
+ const snapshot={
+  meta:{title:"AURA BETA — Evidence-first Control Plane",version:"0.1-draft",mode:"STATIC_PROTOTYPE_NO_LIVE_SYNC",generated_at:new Date().toISOString(),normative_effect:"NONE"},
+  verified_live_sources:0,checks_run_in_this_repo:0,
+  disclaimer:"Inherited/sample records only. This export does not prove currentness, authority, ratification, protocol conformance, or production readiness.",
+  evidence_records:evidence,governance_gates:gates,
+  decisions:[
+   {id:"DEC-0001",status:"ADOPTED_FOR_WORKSPACE_OPERATION_ONLY",normative_effect:"NONE",summary:"BETA is a non-canonical integration/design workspace."},
+   {id:"D-02",status:"PROPOSED_ARCHITECTURE",normative_effect:"NONE",summary:"Conformance evaluator must use an independent oracle and controlled vectors."}
+  ]
+ };
+ const blob=new Blob([JSON.stringify(snapshot,null,2)],{type:"application/json"});
+ const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="aura-beta-demo-snapshot.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+});
+drawEvidence();
+</script>
+</body>
+</html>
