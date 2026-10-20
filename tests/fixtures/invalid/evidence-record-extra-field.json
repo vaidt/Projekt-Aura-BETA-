@@ -1,0 +1,42 @@
+{
+  "evidence_id": "EVID-TEST-VALID-001",
+  "claim_id": "Test fixture proving a well-formed registry record is accepted",
+  "source_uri": "https://example.invalid/valid-evidence-fixture",
+  "source_revision": {
+    "revision_type": "git_commit",
+    "revision_id": "0123456789abcdef0123456789abcdef01234567",
+    "repository": "fixture/test",
+    "path": "evidence/valid.json"
+  },
+  "content_digest": null,
+  "evidence_availability": "PRESENT",
+  "verification_result": "NOT_RUN",
+  "verification_method": {
+    "name": "schema-fixture-only",
+    "version": "1.0",
+    "command_or_procedure": "Schema validation test; no actual artifact verification.",
+    "environment": "CI"
+  },
+  "scope_coverage": {
+    "included": [
+      "Historical M1 Markdown exact bytes at commit 6028ceda886db062488b29578d573f5826968d32",
+      "Attached signature namespace and Ed25519 signature check"
+    ],
+    "excluded": [
+      "Constitutional authority of signer",
+      "Legal or constitutional validity of act",
+      "Current amended Markdown bytes"
+    ],
+    "coverage_status": "EXHAUSTED_WITHIN_SCOPE"
+  },
+  "observed_at": "2026-10-20T15:56:41.697Z",
+  "reviewer": "AURA BETA source-baseline analysis (2026-10-20)",
+  "limitations": [
+    "Test-only data; not evidence of AURA protocol conformance."
+  ],
+  "supersedes": [],
+  "normative_effect": "NONE",
+  "verification_artifact_uri": "https://github.com/vaidt/Projekt-Aura-BETA-/blob/alpha/bootstrap-architecture/docs/assurance/SOURCE_BASELINE_2026-10-20.md",
+  "notes": "TEST FIXTURE ONLY; NOT OPERATIONAL EVIDENCE.",
+  "unapproved_extra_field": "must not be silently accepted"
+}
