@@ -104,7 +104,7 @@ Article XIII's own precondition refers to control over “the canonical reposito
 | Decision scope | Article XIII speaks to appointment of initial Chief Architect; Genesis declaration additionally asserts broad P-008 and implementation powers | **SCOPE ALIGNMENT REQUIRES COMPETENT REVIEW** |
 | Effective date | Text date 2026-09-24 and Git commit metadata | **DECLARED / OBSERVED; EFFECTIVENESS BASIS NOT INDEPENDENTLY ESTABLISHED** |
 | Current validity / revocation | No independent external trust anchor or complete revocation/succession record established in this inventory; signature mismatch exists for amended M1 bytes | **NOT ESTABLISHED**; do not equate this with proof of revocation |
-| Authenticated outcome | Genesis signature and other candidate signatures will be recorded by exact-byte OpenSSH observation; current M1 signature fails | **PARTIAL / CONFLICTED**; a cryptographic result does not itself prove authority |
+| Authenticated outcome | Genesis Declaration, Authority Binding v1.1 and current P-008 exact-byte SSHSIG checks passed; current amended M1 exact-byte check fails | **PARTIAL / CONFLICTED**; signatures pass under repository-sourced allow-list, while issuer competence and normative effect remain not established |
 
 Required chain:
 
@@ -129,7 +129,7 @@ The source-pinned observation completed in [workflow run #39472439876](https://g
 | Current P-008 record / `aura-governance` | **PASS · exit 0** | Signature validates the pinned current record bytes; internal status conflict remains unresolved. |
 | M1 current amended record / `aura-governance` | **FAIL · exit 255** | Separate strict M1 workflow continues to reject current bytes against the attached signature. |
 
-The Genesis SHA-256 was `6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6`, matching the value referenced in M1 and PR #32. Planned durable registry records are `EVID-GOV-GENESIS-SIG-006`, `EVID-GOV-AUTHORITY-BINDING-SIG-007`, and `EVID-GOV-P008-SIG-008`. The run attached an observation JSON artifact.
+The Genesis SHA-256 was `6b5a4c4eaa258eef27452fe6a2f2d752484ae6c88968a039b0b40ca0ac8f2bb6`, matching the value referenced in M1 and PR #32. The durable registry records `EVID-GOV-GENESIS-SIG-006`, `EVID-GOV-AUTHORITY-BINDING-SIG-007`, and `EVID-GOV-P008-SIG-008` have now been added under `evidence/registry/` and passed the schema validation job on run #39473359520. The run attached an observation JSON artifact.
 
 The observation job is informational: its job PASS means pinned inputs were retrieved and results recorded, not that every relevant signature passed or that governance authority was established. The aggregate workflow remains FAIL because the strict M1 gate fails. A successful signature check proves neither issuer competence, independent natural-person identity, canonical-repository designation, effective date, ratification procedure, nor normative effect.
 
