@@ -140,7 +140,67 @@ A future adjudication may be accepted only when the record supplies:
 - an independent review/reproduction record; and
 - an explicit disposition, including its boundaries and unresolved questions.
 
-## 8. Related records
+## 8. Review of analytical claims and prohibited inferences
+
+This section clarifies how the intake classifies claims made in the project discussion. It is an engineering/evidence clarification only and has no normative effect.
+
+### 8.1 The authority instrument is not “evidence value = zero”
+
+The received `Authority Kamil Krasiński Aura-IDToken.md` is an available artifact and evidence that the supplied file makes the statements transcribed in §3.1. Its digest binds this intake to the received bytes. It is **not**, on the current record, sufficient evidence of issuer competence, appointment validity, key ownership, delegation continuity, or ratification power.
+
+Use the separate dispositions:
+- Artifact availability: **PRESENT**
+- Claim made by artifact: **OBSERVED**
+- Authority/competence established by that artifact alone: **NO**
+- Overall authority continuity: **NOT PROVEN**
+
+Do not assign a numerical evidence value of zero: no such scoring rule has been established, and doing so would erase the distinction between evidence of a claim and proof that the claim is authoritative.
+
+### 8.2 The Addendum is scope-limited, not a constitutive decision
+
+The supplied Wave 1 Addendum states `Constitutive Authority: NONE`, `Normative Effect: NONE`, and `Governance Status: BLOCKED / NOT ESTABLISHED`. It expressly excludes G0, M1 closure, P-008 ratification, DQ-006 governance closure, protocol certification, and implementation authorization.
+
+Consequently it is not evidence that those gates are closed. Its explicit exclusions should be observed; do not characterize the file as corrupted merely because it is non-constitutive.
+
+### 8.3 Cryptographic mismatch is not a revocation finding
+
+The supported technical result is:
+- Historical M1 Markdown at the identified signed revision: `ssh-keygen -Y verify` **PASS / exit 0**.
+- Current amended Markdown with the attached signature and tested allow-list: **FAIL / exit 255**.
+
+This proves a mismatch between the tested signature and current exact message bytes, under the tested key input. It does **not** prove the historical act is revoked, that the key is untrusted, that the signer was incompetent, or that the current act is legally invalid. Those require separate governance evidence.
+
+Keep dimensions separate: current-byte signature verification **FAIL**; authority continuity **NOT PROVEN**; M1 operational disposition **BLOCKED** pending the applicable competent process. Do not rename the signature result to “current validity = FAIL” unless the governing rules explicitly define that implication.
+
+### 8.4 Effective date is not established by a Git timestamp alone
+
+A Git commit SHA identifies an object; ordinary author and committer timestamps are not an independent trusted timestamp and do not, by themselves, prove when a governance act became effective. Effective date must be established from the competent act and its governing procedure. Signed commits, signed tags, or timestamping evidence can support provenance/timing for their defined scope, but do not independently establish authority or normative effect.
+
+The September historical signed revision and the October content amendment establish different source revisions. Do not treat the revision dates alone as proof of the legal effective date of M1 or its supersession.
+
+### 8.5 CI status is a technical gate, not an authenticated governance outcome
+
+Run [#39469134752](https://github.com/vaidt/Projekt-Aura-BETA-/actions/runs/39469134752) reported schema-validation **PASS**, strict M1 signature-gate **FAIL**, and aggregate workflow **FAIL**. The workflow is fail-closed for the tested M1 byte/signature condition.
+
+The schema PASS proves structural checks for the stated schemas and inputs; it does not prove truth, identity, authority, ratification, or conformance. The signature-gate FAIL proves the stated verification failure; it does not itself create or issue a governance disposition. A branch-protection rule requiring this workflow was not independently verified in this intake. PR #1 is observed as **OPEN / DRAFT / UNMERGED**; do not claim that branch protection itself was verified as the cause preventing merge.
+
+The committed npm lockfile and `npm ci` pin the package dependency graph more tightly. They do not make the entire CI environment hermetic: runner images, Node/npm tooling and third-party Actions remain environmental inputs unless separately pinned and verified.
+
+### 8.6 Signing again is necessary only if the competent process chooses that route; it is never sufficient by itself
+
+Re-signing the current Markdown would change the bytes covered by a valid signature; it would not, by itself, prove that the signer has authority to re-ratify M1, that the required process occurred, or that any change is retroactive. Before accepting a new signature, the evidence must establish the signing key's binding to a competent issuer and the issuer's decision scope, procedure, and effective date.
+
+Likewise, a “clean reset,” a new name such as M1-R, a new key pair, or archiving old records cannot bootstrap constitutional authority merely by being performed in BETA. The authority that permits the reset and establishes the new root/ratification procedure must itself be demonstrated.
+
+### 8.7 Do not restrict the decision to two outcomes
+
+The proposed re-ratification and formal-deprecation paths are possible dispositions only if supported by a competent procedure. A third valid operational outcome remains **INSUFFICIENT / CONFLICTING EVIDENCE → NOT PROVEN / BLOCKED**, with WP-3 held pending. No assumption that the listed options are exhaustive may substitute for the governing rule.
+
+### 8.8 “Sanitized” does not mean fully resolved
+
+The three legacy repositories listed in the consolidation records were archived after notices. That is a bounded operational action, not a resolution of the duplicate canonical-source claims in the Aura-IDToken namespace. The source inventory remains partial; authority continuity remains unproven; CI is intentionally red; and live collectors and independent Conformance Core are not established as operational. Describe the current state as **controlled quarantine with explicit evidence gates**, not as a fully clean or resolved project state.
+
+## 9. Related records
 
 - [Alpha Working Mandate](ALPHA_WORKING_MANDATE.md)
 - [Status Semantics](STATUS_SEMANTICS.md)
