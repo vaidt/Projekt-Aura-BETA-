@@ -1,7 +1,9 @@
-name: One-time schema validator lockfile generation
+name: One-time schema lockfile generator
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - alpha/bootstrap-architecture
 
 permissions:
   contents: write
@@ -12,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Checkout the requested working branch
+      - name: Checkout the BETA work branch
         uses: actions/checkout@v4
         with:
           ref: alpha/bootstrap-architecture
@@ -23,14 +25,14 @@ jobs:
         with:
           node-version: "22"
 
-      - name: Resolve and write complete npm lockfile
+      - name: Resolve complete transitive dependency lock
         working-directory: tools/schema-validator
         run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
 
-      - name: Commit only the generated lockfile to the working branch
+      - name: Commit the generated lockfile to this work branch only
         run: |
           if git diff --quiet -- tools/schema-validator/package-lock.json; then
-            echo "Lockfile is already current; nothing to commit."
+            echo "No lockfile changes to commit."
             exit 0
           fi
           git config user.name "github-actions[bot]"
