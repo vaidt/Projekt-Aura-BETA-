@@ -224,5 +224,35 @@
     "Synthetic fixture only; SHA values and artifact details are illustrative, not evidence of real bytes.",
     "A valid signature over exact bytes does not independently prove signer competence, authority continuity, or ratification.",
     "The schema is a BETA workspace proposal and has no normative effect on AURA."
-  ]
+  ],
+  "aps300_binding": {
+    "status": "BLOCKED",
+    "reason_code": "APS300_RECORDS_NOT_PRESENT",
+    "snapshot": {
+      "source_repository_uri": "https://github.com/vaidt/aura-specification",
+      "source_commit_sha": "991274eed57d5b3308b0607feeb4d01e6a485974",
+      "source_document_path": "aps/APS-300_EVIDENCE_MODEL.md",
+      "source_document_blob_sha1": "ad762de0fee86ece0c1fc75471a8fd510c6f91b5",
+      "snapshot_manifest_path": "schemas/aps300-draft/SNAPSHOT_MANIFEST.json",
+      "snapshot_manifest_blob_sha1": "022261af4bb5b518cdb3299a73e0ba36f8633b2f",
+      "evidence_object_schema_blob_sha1": "660ff4d5eb4d84fe53723fb7f3b8e3313dfc8317",
+      "evidence_pack_schema_blob_sha1": "56dd031bf6ef8f59367549ee6c57b803f0f009ea",
+      "source_schema_status": "DRAFT",
+      "schema_id_namespace_status": "CONFLICTED"
+    },
+    "evidence_object": {
+      "status": "MISSING",
+      "artifact_id": null,
+      "sha256": null,
+      "git_blob_sha1": null,
+      "schema_validation_status": "NOT_RUN"
+    },
+    "evidence_pack": {
+      "status": "MISSING",
+      "artifact_id": null,
+      "sha256": null,
+      "git_blob_sha1": null,
+      "schema_validation_status": "NOT_RUN"
+    }
+  }
 }
