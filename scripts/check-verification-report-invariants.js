@@ -41,6 +41,12 @@ for (const file of paths) {
   if (["BLOCKED", "NOT_RUN"].includes(ssh.status) && (ssh.exit_code !== null || ssh.cause_code === "NONE")) reject(file, "SSH BLOCKED/NOT_RUN requires null exit and explicit cause");
   const gov = report.governance_gate;
   if (gov.status === "PASS" && (gov.authority_continuity !== "ESTABLISHED" || gov.ratification_status !== "RATIFIED" || !gov.decision_authority_ref || gov.evidence_refs.length === 0)) reject(file, "governance PASS lacks authority/ratification/reference evidence");
+  const aps = report.aps300_binding;
+  if (!aps) reject(file, "missing aps300_binding to the APS-300 Evidence Object/Pack record");
+  else {
+    if (aps.status === "PRESENT" && (aps.evidence_object.status !== "PRESENT" || aps.evidence_object.schema_validation_status !== "PASS" || aps.evidence_pack.status !== "PRESENT" || aps.evidence_pack.schema_validation_status !== "PASS")) reject(file, "APS-300 binding PRESENT requires both records and schema validation PASS");
+    if (aps.status !== "PRESENT" && aps.reason_code === "NONE") reject(file, "non-PRESENT APS-300 binding requires an explicit reason code");
+  }
   if (report.overall_result.status === "PASS" && (report.technical_result.status !== "PASS" || report.byte_evidence.status !== "PASS" || ssh.status !== "PASS" || gov.status !== "PASS")) reject(file, "overall PASS conflicts with subordinate gate status");
   if (report.overall_result.status !== "PASS" && report.overall_result.reason_code === "NONE") reject(file, "non-PASS overall result requires explicit reason code");
   if (!failed) console.log(`PASS ${file}: artifact references and status invariants verified`);
