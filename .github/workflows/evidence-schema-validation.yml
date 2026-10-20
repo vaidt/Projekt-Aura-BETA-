@@ -1,0 +1,51 @@
+name: Evidence Schema Validation
+
+on:
+  pull_request:
+    paths:
+      - "evidence/**"
+      - "schemas/**"
+      - "scripts/validate-evidence.sh"
+      - "tests/fixtures/**"
+      - ".github/workflows/evidence-schema-validation.yml"
+  push:
+    branches:
+      - main
+      - alpha/bootstrap-architecture
+    paths:
+      - "evidence/**"
+      - "schemas/**"
+      - "scripts/validate-evidence.sh"
+      - "tests/fixtures/**"
+      - ".github/workflows/evidence-schema-validation.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: evidence-schema-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate-evidence:
+    name: Validate evidence schemas and records
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install pinned schema validator packages
+        run: |
+          npm install --prefix "$RUNNER_TEMP/aura-schema-tools" --no-save --ignore-scripts ajv-cli@5.0.0 ajv-formats@3.0.1
+
+      - name: Validate schemas, fixtures, provenance pins, and every evidence JSON file
+        env:
+          AJV_BIN: ${{ runner.temp }}/aura-schema-tools/node_modules/.bin/ajv
+        run: bash scripts/validate-evidence.sh
