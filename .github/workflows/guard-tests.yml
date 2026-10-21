@@ -81,10 +81,11 @@ jobs:
             exit 1
           fi
 
-  gate-3-4-integration:
-    name: Gate 3 + Gate 4 real Core integration
-    needs: [guard-tests]
-    runs-on: ubuntu-24.04
+  integration-tests:
+    name: Middleware Integration & HTTP Stress
+    # Fail-closed: integration cannot start until tests, RustSec audit, and dependency policy pass.
+    needs: [guard-tests, cargo-audit, cargo-deny]
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - name: Checkout BETA
