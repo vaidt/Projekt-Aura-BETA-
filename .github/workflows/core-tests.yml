@@ -17,7 +17,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: aura-core-ci-\${{ github.workflow }}-\${{ github.ref }}
+  group: aura-core-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -70,7 +70,7 @@ jobs:
         if: always() && hashFiles('artifacts/core-junit.xml') != ''
         uses: actions/upload-artifact@v4
         with:
-          name: aura-core-pytest-\${{ github.sha }}
+          name: aura-core-pytest-${{ github.sha }}
           path: artifacts/core-junit.xml
           if-no-files-found: error
           retention-days: 30
