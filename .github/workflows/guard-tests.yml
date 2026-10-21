@@ -33,10 +33,20 @@ jobs:
     name: Guard execution checks
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    env:
+      AURA_SPECIFICATION_ROOT: ${{ github.workspace }}/aura-specification
     steps:
       - name: Checkout BETA
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          persist-credentials: false
+
+      - name: Checkout pinned AURA specification fixture
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          repository: vaidt/aura-specification
+          ref: b3a6e784d9a6ea2e0b554310e3de80e7d13de859
+          path: aura-specification
           persist-credentials: false
 
       - name: Install pinned Rust 1.86.0 (Guard MSRV)
