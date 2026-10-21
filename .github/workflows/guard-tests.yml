@@ -31,6 +31,8 @@ env:
 jobs:
   guard-tests:
     name: Guard execution checks
+    # Fail-closed: Rust suite and GUARD-RS-001 wait for RustSec and dependency-policy gates.
+    needs: [cargo-audit, cargo-deny]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
