@@ -1,0 +1,7 @@
+# Test-tool versions captured from the passing CI baseline on 2026-10-21.
+# Runtime package dependencies remain separate from this test-runner set.
+iniconfig==2.3.1
+packaging==26.3
+pluggy==1.7.0
+Pygments==2.21.0
+pytest==9.1.1

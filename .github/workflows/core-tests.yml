@@ -38,8 +38,12 @@ jobs:
 
       - name: Install Python test runner
         run: |
-          python -m pip install pytest
-          python -c "import pytest; print('pytest import: PASS')"
+          python -m pip install -r core/requirements-test.txt
+          python - <<'PY'
+          from importlib.metadata import version
+          for package in ("pytest", "iniconfig", "packaging", "pluggy", "Pygments"):
+              print(f"{package}=={version(package)}")
+          PY
 
       - name: Fail closed if Core has not been migrated
         shell: bash
