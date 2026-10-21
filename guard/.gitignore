@@ -1,0 +1,29 @@
+/target
+/dist
+/*.zip
+/logs/*.jsonl
+/logs/*.bin
+/logs/*.dat
+/reports/*.pdf
+/reports/.venv
+.env
+.env.local
+# Dev signing key + per-pack signatures are produced by `scripts/setup.sh`.
+# They must never be committed — sign your prod policies on a separate
+# trusted workstation / HSM and check in only the .sig/.signer files.
+*.key
+*.pem
+*.p12
+/policies/*.sig
+/policies/*.signer
+/policies/aura.key*
+.DS_Store
+/logs/segments/*.manifest.json
+/logs/segments/*.tsr
+/logs/segments/*.tmp
+
+# Test fixtures committed for the RFC 3161 verifier need to bypass the
+# blanket `*.pem` / `*.tsr` ignore rules above.
+!tests/fixtures/tsa/*.pem
+!tests/fixtures/tsa/*.crt
+!tests/fixtures/tsa/*.tsr

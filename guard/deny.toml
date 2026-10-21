@@ -1,0 +1,44 @@
+[graph]
+all-features = true
+no-default-features = false
+
+[advisories]
+ignore = [
+  # RUSTSEC-2023-0071 (Marvin Attack) — non-constant-time RSA *private* key
+  # operations in `rsa` 0.9. We use `rsa` only for **signature verification**
+  # in `src/tst_verify.rs` (RFC 3161 SignerInfo over TSA-issued tokens).
+  # Verification touches the signer's *public* key, never a private key, so
+  # the side-channel that the advisory describes is not reachable from this
+  # codebase. The only safer alternative today is dynamically linking
+  # OpenSSL, which `deny.toml` explicitly forbids. Re-evaluate when a
+  # constant-time RustCrypto release ships.
+  "RUSTSEC-2023-0071",
+]
+yanked = "deny"
+
+[licenses]
+# `unlicensed`, `copyleft`, `default`, and `allow-osi-fsf-free` were removed
+# in cargo-deny 0.14 (see EmbarkStudios/cargo-deny#611). The allowlist below
+# is now the single source of truth: any license not in `allow` is denied.
+allow = [
+  "MIT", "Apache-2.0", "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause", "BSD-3-Clause", "ISC", "Unicode-DFS-2016",
+  "MPL-2.0", "Zlib", "Unicode-3.0", "0BSD", "CC0-1.0",
+  # `webpki-roots` ships the Mozilla CA trust list under CDLA-Permissive-2.0.
+  # https://cdla.dev/permissive-2-0/ — permissive, redistribution allowed,
+  # no copyleft. Required for `ureq` rustls TLS (used by RFC 3161 client).
+  "CDLA-Permissive-2.0",
+]
+confidence-threshold = 0.8
+
+[bans]
+multiple-versions = "warn"
+deny = [
+  # Disallow OpenSSL — we ship a Rust-native crypto stack.
+  { name = "openssl-sys" },
+]
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]

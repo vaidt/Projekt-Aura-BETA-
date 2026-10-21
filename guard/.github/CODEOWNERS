@@ -1,0 +1,28 @@
+# Default owner for the entire repository.
+# Every PR requires review from @vaidt unless a more specific rule below applies.
+# NOTE: Replace @vaidt with individual GitHub usernames or org team slugs
+# (e.g. @vaidt/security-team) once those teams are created in the GitHub org.
+*       @vaidt
+
+# Security-critical paths — require @vaidt review on every change.
+# Requirement: Enterprise Readiness Audit T-02 (P0).
+# Any modification to cryptographic primitives, the hash-chain, the decision
+# engine, or the authentication middleware must be approved before merging.
+src/crypto.rs   @vaidt
+src/chain.rs    @vaidt
+src/engine.rs   @vaidt
+src/auth.rs     @vaidt
+
+# Policy assets — changes to signed policies or the trusted-signers registry
+# carry the same weight as cryptographic code changes.
+policies/                   @vaidt
+trusted_signers.json        @vaidt
+
+# CI/CD workflows — changes to the pipeline can suppress security checks.
+.github/workflows/          @vaidt
+
+# Compliance and governance documents are audit artifacts;
+# inaccuracies have regulatory consequences.
+docs/compliance-brief.md    @vaidt
+docs/threat-model.md        @vaidt
+docs/adr/                   @vaidt

@@ -1,0 +1,305 @@
+//! `/v1/audit` handler — the core decision endpoint.
+
+use axum::extract::State;
+use axum::http::{HeaderMap, StatusCode};
+use axum::Json;
+use chrono::Utc;
+use std::sync::Arc;
+use std::time::Instant;
+use uuid::Uuid;
+
+use crate::api::AppState;
+use crate::chain::compute_chain_hash_with_measurement;
+use crate::core_adapter::{
+    configured_evaluator_version, evaluate as evaluate_core, measurement_input_hash,
+    MAX_MEASUREMENT_VECTOR_DIMENSION,
+};
+use crate::crypto::sha256_hex;
+use crate::engine::evaluate;
+use crate::models::{AuditEntry, AuditRequest, CoreMeasurement, CoreMeasurementStatus};
+use crate::normalizer::shadow_normalize;
+use crate::policy::CompiledPolicy;
+
+/// Maximum byte length accepted for an inbound `X-Request-ID` value.
+///
+/// Anything longer is silently ignored (we generate a fresh UUIDv4 instead)
+/// to prevent log-injection / unbounded-string attacks.
+pub(crate) const MAX_REQUEST_ID_LEN: usize = 128;
+
+/// Extract a caller-supplied correlation id from `X-Request-ID`.
+///
+/// Returns the header value when it is valid UTF-8 and within
+/// [`MAX_REQUEST_ID_LEN`] bytes; otherwise returns `None`.
+fn extract_request_id(headers: &HeaderMap) -> Option<String> {
+    headers
+        .get("x-request-id")
+        .and_then(|v| v.to_str().ok())
+        .filter(|s| !s.is_empty() && s.len() <= MAX_REQUEST_ID_LEN)
+        .map(|s| s.to_string())
+}
+
+/// HTTP handler for `POST /v1/audit`.
+///
+/// On success returns the canonical [`AuditEntry`] (same shape as the on-disk
+/// log line). On policy / log failures returns `400` or `503` respectively.
+pub async fn handle_audit(
+    State(state): State<AppState>,
+    headers: HeaderMap,
+    Json(req): Json<AuditRequest>,
+) -> Result<Json<AuditEntry>, (StatusCode, String)> {
+    let start = Instant::now();
+
+    // --- Correlation ids -------------------------------------------------
+    // `request_id` is caller-supplied for cross-service tracing (e.g. from an
+    // upstream API gateway).  `audit_id` is always server-generated and serves
+    // as the immutable identity of *this* audit decision.
+    let request_id = extract_request_id(&headers);
+    let audit_id = Uuid::new_v4().to_string();
+
+    // Attach both ids to the current tracing span so log lines emitted
+    // within this handler carry them.
+    tracing::Span::current().record("audit_id", audit_id.as_str());
+    if let Some(rid) = &request_id {
+        tracing::Span::current().record("request_id", rid.as_str());
+    }
+
+    if state.log.is_halted() {
+        metrics::counter!(
+            "aura_guard_requests_total",
+            "status" => "503",
+            "decision" => "none",
+            "policy_set" => "none",
+        )
+        .increment(1);
+        return Err((
+            StatusCode::SERVICE_UNAVAILABLE,
+            "audit log halted (fail-closed posture)".into(),
+        ));
+    }
+
+    // Validate API-level vector shape before policy evaluation or any append.
+    // A mismatch against the configured Core constitution is a separate adapter
+    // failure and remains passive; empty/oversized vectors violate this API contract.
+    if let Some(input) = req.measurement_input.as_ref() {
+        if input.vector.is_empty() || input.vector.len() > MAX_MEASUREMENT_VECTOR_DIMENSION {
+            return Err((
+                StatusCode::BAD_REQUEST,
+                format!(
+                    "measurement_input.vector must contain 1..={} signed int32 values",
+                    MAX_MEASUREMENT_VECTOR_DIMENSION
+                ),
+            ));
+        }
+    }
+
+    let policy_set = req
+        .policy_set
+        .clone()
+        .unwrap_or_else(|| state.config.default_policy_set.clone());
+
+    // Resolve policy from the pre-warmed cache only — no lazy loads.
+    let policy = resolve_policy(&state, &policy_set).map_err(|e| {
+        tracing::warn!(
+            error = %e,
+            policy_set = %policy_set,
+            audit_id = %audit_id,
+            request_id = ?request_id,
+            "unknown policy_set",
+        );
+        metrics::counter!(
+            "aura_guard_requests_total",
+            "status" => "400",
+            "decision" => "none",
+            // Fixed label value: `policy_set` is caller-supplied here, and
+            // using it verbatim would allow unbounded metric label
+            // cardinality. The requested value is preserved in the log line.
+            "policy_set" => "unknown",
+        )
+        .increment(1);
+        (StatusCode::BAD_REQUEST, e)
+    })?;
+
+    // Build canonical input + shadow.
+    let original = format!(
+        "{} {} {}",
+        req.context, req.payload.prompt, req.payload.response
+    );
+    let shadow = shadow_normalize(&original);
+    let input_hash = sha256_hex(&original);
+    let shadow_hash = sha256_hex(&shadow);
+
+    // Optional AURA Core measurement. This is observational only: it is recorded
+    // in the protected chain payload but does not alter the existing Rust policy decision.
+    let core_measurement = if let Some(measurement_input) = req.measurement_input.as_ref() {
+        let measurement_input_hash = measurement_input_hash(measurement_input);
+        match evaluate_core(measurement_input).await {
+            Ok(result) => CoreMeasurement {
+                status: CoreMeasurementStatus::Completed,
+                ari: Some(result.ari),
+                drift: Some(result.drift),
+                evaluator_version: result.evaluator_version,
+                measurement_input_hash: Some(measurement_input_hash),
+            },
+            Err(error) => {
+                tracing::error!(
+                    error = %error,
+                    audit_id = %audit_id,
+                    request_id = ?request_id,
+                    "AURA Core measurement failed; retaining policy-only decision",
+                );
+                CoreMeasurement::error(configured_evaluator_version(), measurement_input_hash)
+            }
+        }
+    } else {
+        CoreMeasurement::omitted(configured_evaluator_version())
+    };
+
+    // Evaluate using the existing Rust policy engine only. ARI/drift are passive
+    // evidence until a separately defined policy integration consumes them.
+    let (decision, violations) = evaluate(&shadow, &req.context, &policy.rules);
+
+    // Chain construction and durable append are one serialized operation.
+    // The writer supplies the only valid next sequence and predecessor while
+    // holding its mutex; no concurrent request can hash against the same head.
+    // The sealer receives committed entries before the writer lock is released.
+    // This keeps the Merkle leaf order identical to the JSONL sequence order,
+    // including when many HTTP handlers are appending concurrently.
+    let sealer = state.sealer.clone();
+    let mut sealer_result = None;
+    let entry = state
+        .log
+        .append_with_observer(
+            |seq, prev_hash| {
+                let timestamp = Utc::now().to_rfc3339();
+                let chain_hash = compute_chain_hash_with_measurement(
+                    prev_hash,
+                    &decision,
+                    &policy.name,
+                    &policy.policy_hash,
+                    &req.context,
+                    &input_hash,
+                    &shadow_hash,
+                    seq,
+                    &timestamp,
+                    &core_measurement,
+                );
+
+                AuditEntry {
+                    schema: "aura-guard.audit.v2".into(),
+                    seq,
+                    audit_id: audit_id.clone(),
+                    request_id: request_id.clone(),
+                    timestamp,
+                    decision: decision.clone(),
+                    policy_set: policy.name.clone(),
+                    policy_hash: policy.policy_hash.clone(),
+                    context: req.context.clone(),
+                    input_hash: input_hash.clone(),
+                    shadow_hash: shadow_hash.clone(),
+                    core_measurement: Some(core_measurement.clone()),
+                    violations: violations.clone(),
+                    prev_hash: prev_hash.to_string(),
+                    chain_hash,
+                }
+            },
+            |committed_entry| {
+                if let Some(sealer) = &sealer {
+                    sealer_result = Some(sealer.observe(committed_entry));
+                }
+            },
+        )
+        .map_err(|e| {
+            tracing::error!(
+                error = %e,
+                audit_id = %audit_id,
+                request_id = ?request_id,
+                "audit log write failed — fail-closed",
+            );
+            metrics::counter!(
+                "aura_guard_requests_total",
+                "status" => "503",
+                "decision" => decision.clone(),
+                "policy_set" => policy.name.clone(),
+            )
+            .increment(1);
+            (StatusCode::SERVICE_UNAVAILABLE, e.to_string())
+        })?;
+
+    // Sealing remains fail-open with respect to the already durable audit
+    // record, but its observation was ordered before another append could run.
+    if let Some(observe_result) = sealer_result {
+        match observe_result {
+            Ok(crate::sealer::SealOutcome::Sealed {
+                segment_id,
+                entry_count,
+                tsa_work,
+            }) => {
+                tracing::info!(segment_id, entry_count, "segment sealed (size threshold)");
+                if let Some(work) = tsa_work {
+                    crate::sealer::maybe_spawn_tsa_submission(&state.config, work);
+                }
+            }
+            Ok(_) => {}
+            Err(e) => {
+                tracing::error!(error = %e, "segment sealer error");
+                metrics::counter!("aura_segments_seal_errors_total").increment(1);
+            }
+        }
+    }
+
+    // --- Metrics ---------------------------------------------------------
+    let elapsed_secs = start.elapsed().as_secs_f64();
+
+    metrics::counter!(
+        "aura_guard_decisions_total",
+        "decision" => decision.clone(),
+        "policy_set" => policy.name.clone(),
+    )
+    .increment(1);
+
+    metrics::counter!(
+        "aura_guard_requests_total",
+        "status" => "200",
+        "decision" => decision.clone(),
+        "policy_set" => policy.name.clone(),
+    )
+    .increment(1);
+
+    metrics::histogram!(
+        "aura_guard_request_duration_seconds",
+        "policy_set" => policy.name.clone(),
+    )
+    .record(elapsed_secs);
+
+    // Per-rule violation counters for SLO dashboards / alerting.
+    for v in &entry.violations {
+        metrics::counter!(
+            "aura_guard_policy_violations_total",
+            "rule_id"    => v.rule.clone(),
+            "action"     => v.action.clone(),
+            "policy_set" => policy.name.clone(),
+        )
+        .increment(1);
+    }
+
+    Ok(Json(entry))
+}
+
+/// Resolve a policy by name. **Cache-only** by design: every policy that
+/// the runtime is allowed to evaluate against must have been pre-loaded and
+/// signature-verified at boot (see `main.rs` bootstrap fail-closed gate).
+/// Refusing to lazy-load eliminates the temporal integrity gap in which a
+/// fresh policy could be added to disk and evaluated against without ever
+/// passing through the boot-time signer gate.
+fn resolve_policy(state: &AppState, policy_set: &str) -> Result<Arc<CompiledPolicy>, String> {
+    state
+        .policies
+        .get(policy_set)
+        .map(|p| p.clone())
+        .ok_or_else(|| {
+            format!(
+                "unknown policy_set {policy_set:?}: not pre-loaded at boot. \
+                 Add the signed pack and restart the service."
+            )
+        })
+}
