@@ -1,0 +1,75 @@
+name: Aura Core CI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "core/**"
+      - ".github/workflows/core-tests.yml"
+  push:
+    paths:
+      - "core/**"
+      - ".github/workflows/core-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aura-core-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  core-tests:
+    name: Full pytest suite
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test bootstrap dependencies
+        run: |
+          python -m pip install pytest rfc8785
+          python -c "import pytest, rfc8785; print('pytest and rfc8785 imports: PASS')"
+
+      - name: Fail closed if Core has not been migrated
+        shell: bash
+        run: |
+          if [[ ! -f core/pyproject.toml ]]; then
+            echo "::error title=Core source missing::Expected core/pyproject.toml. Import and review the source snapshot before treating this workflow as a test gate."
+            exit 1
+          fi
+
+          if ! find core -type f \( -name 'test_*.py' -o -name '*_test.py' \) -print -quit | grep -q .; then
+            echo "::error title=Core tests missing::No Python test files were found under core/."
+            exit 1
+          fi
+
+      - name: Install Aura Core
+        run: python -m pip install -e ./core
+
+      - name: Validate Python environment
+        run: python -m pip check
+
+      - name: Full pytest suite
+        run: |
+          mkdir -p artifacts
+          python -m pytest -q core --junitxml=artifacts/core-junit.xml
+
+      - name: Upload pytest result
+        if: always() && hashFiles('artifacts/core-junit.xml') != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-core-pytest-${{ github.sha }}
+          path: artifacts/core-junit.xml
+          if-no-files-found: error
+          retention-days: 30
