@@ -92,6 +92,11 @@ figment = { version = "0.10", features = ["env", "toml"] }
 # Pure-Rust TLS (rustls); no system OpenSSL dependency.
 ureq = { version = "2.10", default-features = false, features = ["tls"] }
 
+# Explicit security floors for the rustls trust stack used by the TLS client.
+# Keep these minimum versions visible in the manifest as well as locked below.
+rustls-webpki = "0.103.16"
+webpki-roots = "1.0.10"
+
 # RFC 3161 / CMS / PKIX verification stack. Pure-Rust, RustCrypto-curated.
 # Used only by `aura-seal verify-tst` in strict mode (operator-pinned roots).
 cms = { version = "0.2", default-features = false, features = ["std", "pem"] }
