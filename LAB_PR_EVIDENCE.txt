@@ -1,0 +1,6 @@
+AURA M1 PR EVENT LAB — NON-CONSTITUTIVE
+This file is the ONLY authorized change in draft PR from lab/m1-sshsig-pr-head-20261119 to lab/m1-sshsig-pr-base-20261119.
+Parent base commit: 2fdcae7f1ba96c4a4a6472b8d036069f730db00e
+Verifier: OpenSSH SSHSIG actual bytes; historical expected PASS; current M1 expected FAIL.
+No changes to signature, trust anchor, policy ruleset or protected main.
+M1=BLOCKED; P-008=NOT_RATIFIED; RELEASE=NO_GO.
