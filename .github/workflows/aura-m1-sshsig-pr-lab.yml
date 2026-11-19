@@ -1,0 +1,118 @@
+name: AURA M1 PR merge-ref isolated LAB - NON-CONSTITUTIVE
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - lab/m1-sshsig-pr-base-20261119
+permissions:
+  contents: read
+concurrency:
+  group: aura-m1-pr-lab-20261119
+  cancel-in-progress: false
+jobs:
+  m1-lab-sshsig-observation:
+    name: M1 LAB PR merge-ref SSHSIG (NOT M1 gate)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - name: Fetch exact triggering Git commit
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = "pull_request"
+          test "$GITHUB_BASE_REF" = "lab/m1-sshsig-pr-base-20261119"
+          [[ "$GITHUB_REF" =~ ^refs/pull/[0-9]+/merge$ ]]
+          [[ "$GITHUB_SHA" =~ ^[0-9a-f]{40}$ ]]
+          python3 - "$GITHUB_EVENT_PATH" <<'PR_JSON'
+          import json,sys
+          ev=json.load(open(sys.argv[1],encoding="utf-8"))
+          pr=ev["pull_request"]
+          assert pr["base"]["repo"]["full_name"]=="vaidt/Projekt-Aura-BETA-"
+          assert pr["base"]["ref"]=="lab/m1-sshsig-pr-base-20261119"
+          assert pr["head"]["repo"]["full_name"]=="vaidt/Projekt-Aura-BETA-"
+          assert pr["head"]["ref"]=="lab/m1-sshsig-pr-head-20261119"
+          assert pr["draft"] is True
+          assert ev["action"] in ("opened","reopened","synchronize")
+          print("PR_LAB_AUTHORIZATION=BOUND_TO_SAME_REPO_EXACT_LAB_BASE_HEAD_DRAFT")
+          PR_JSON
+          mkdir -p "$RUNNER_TEMP/aura-m1-lab"
+          cd "$RUNNER_TEMP/aura-m1-lab"
+          git init --quiet
+          git remote add origin "https://github.com/vaidt/Projekt-Aura-BETA-.git"
+          git -c protocol.version=2 fetch --quiet --no-tags --depth=1 origin "$GITHUB_REF"
+          git checkout --quiet --detach FETCH_HEAD
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "PR_LAB_SYNTHETIC_MERGE_SHA=$GITHUB_SHA"
+          git -c protocol.version=2 fetch --quiet --no-tags --depth=1 origin refs/heads/lab/m1-sshsig-pr-base-20261119
+          changed="$(git diff --name-only FETCH_HEAD HEAD)"
+          test "$changed" = "LAB_PR_EVIDENCE.txt"
+          echo "PR_LAB_ALLOWED_DIFF=$changed"
+
+      - name: SHA-256 pin verifier, tests, original signed inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/aura-m1-lab"
+          cat > "$RUNNER_TEMP/m1-expected-sha256.txt" <<'PIN'
+          6dfe5b1a4781ba7d4789178d174c6a39360b81f58da55fadb487f6d00b9764c7  scripts/m1_real_sshsig_gate_candidate.py
+          8d92c23aacbd21149708887ecb5b4da7b10c8c56e4043a96fd90ad28340d42b4  tests/test_m1_gate_candidate.py
+          bf93e1555e83ba50422046adeb9cf24b7b75dd461c23b82ae1ce406abad9b9bb  pinned_source/tests/fixtures/m1/SSHSIG_INPUT_MANIFEST.json
+          91e5af1e253d2cd1b5980c44a1bdaa7394e17372d7ba6525b47e8a077ec653ae  pinned_source/tests/fixtures/m1/historical/AURA_M1_CLOSURE_RECORD_v1.0.md
+          e6ec8697655863c17382c9c25574216b1046eeb0a788139fccdb6d5e312df429  pinned_source/tests/fixtures/m1/current/AURA_M1_CLOSURE_RECORD_v1.0.md
+          fbe4bd1f514d3eaf20635037b570fe9695ed7f339fd054761da7fd45e6157071  pinned_source/tests/fixtures/m1/historical/AURA_M1_CLOSURE_RECORD_v1.0.md.sig
+          fbe4bd1f514d3eaf20635037b570fe9695ed7f339fd054761da7fd45e6157071  pinned_source/tests/fixtures/m1/current/AURA_M1_CLOSURE_RECORD_v1.0.md.sig
+          9e387fc2f6faa77189e15c57391750f0293b630c52d03ea3170bc26d0a61fff6  pinned_source/tests/fixtures/m1/historical/allowed_signers
+          9e387fc2f6faa77189e15c57391750f0293b630c52d03ea3170bc26d0a61fff6  pinned_source/tests/fixtures/m1/current/allowed_signers
+          PIN
+          sha256sum --strict --check "$RUNNER_TEMP/m1-expected-sha256.txt"
+          python3 --version
+          ssh -V 2>&1
+          echo "PINNED_PR9=4efba5a456629b4c84d935655db7ddf0de1b22fa"
+          echo "AUTHORITY_SOURCE=991274eed57d5b3308b0607feeb4d01e6a485974"
+          echo "TRUST_ANCHOR=REPOSITORY_BOUND_NOT_EXTERNALLY_QUALIFIED"
+
+      - name: Real OpenSSH verify historical PASS and current FAIL
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/aura-m1-lab"
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess,sys
+          root=pathlib.Path("pinned_source").resolve()
+          script=pathlib.Path("scripts/m1_real_sshsig_gate_candidate.py").resolve()
+          opts=[
+            "--root",str(root),
+            "--trusted-manifest-sha256","bf93e1555e83ba50422046adeb9cf24b7b75dd461c23b82ae1ce406abad9b9bb",
+            "--trusted-historical-message-sha256","91e5af1e253d2cd1b5980c44a1bdaa7394e17372d7ba6525b47e8a077ec653ae",
+            "--trusted-current-message-sha256","e6ec8697655863c17382c9c25574216b1046eeb0a788139fccdb6d5e312df429",
+            "--trusted-historical-signers-sha256","9e387fc2f6faa77189e15c57391750f0293b630c52d03ea3170bc26d0a61fff6",
+            "--trusted-current-signers-sha256","9e387fc2f6faa77189e15c57391750f0293b630c52d03ea3170bc26d0a61fff6",
+            "--expected-source-repository","vaidt/aura-specification",
+            "--expected-source-commit","991274eed57d5b3308b0607feeb4d01e6a485974",
+            "--expected-namespace","aura-governance",
+            "--expected-identity","kontakt.vaidt@gmail.com"
+          ]
+          for mode,expected_code,expected_status in [
+            ("historical-reference",0,"PASS_HISTORICAL_SSHSIG_BOUNDED"),
+            ("current-strict",2,"BLOCKED_CURRENT_EXACTBYTE_SIGNATURE_MISMATCH")
+          ]:
+            p=subprocess.run([sys.executable,str(script),"--mode",mode,*opts],capture_output=True,text=True,timeout=30)
+            print("HOSTED_LAB_MODE",mode,"exit",p.returncode,"stdout",p.stdout,"stderr",p.stderr,flush=True)
+            assert p.returncode==expected_code, (mode,p.returncode)
+            doc=json.loads(p.stdout)
+            assert doc["status"]==expected_status, doc
+            assert doc["normative_effect"]=="NONE"
+            if mode=="current-strict":
+              assert doc["historical"]["signature_valid"] is True
+              assert doc["current"]["signature_valid"] is False
+            print("CONTROL_JSON_SHA256",mode,hashlib.sha256(p.stdout.encode()).hexdigest())
+          print("M1_STATUS=BLOCKED; HOSTED_LAB=PASS_BOUNDED_CRYPTO_ONLY")
+          PY
+
+      - name: Replay thirty positive and negative tests on hosted runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP/aura-m1-lab"
+          python3 -m unittest discover -s tests -p test_m1_gate_candidate.py -v
+          echo "M1_LAB_MATRIX=30_TESTS; RESULT=PASS_ONLY_IF_TEST_COMMAND_EXITED_ZERO"
